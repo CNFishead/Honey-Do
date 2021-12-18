@@ -13,7 +13,6 @@ const TodoList = () => {
     const value = event.target.value;
     setInput(value);
   };
-  
 
   const handleClick = () => {
     setItems((prevValues) => {
