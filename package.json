@@ -1,0 +1,11 @@
+{
+  "name": "honeydo-mern",
+  "version": "1.0.0",
+  "description": "Keep Track of all your To-Do's with the Honey-Do App",
+  "main": "server/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Austin Howard",
+  "license": "MIT"
+}
