@@ -28,7 +28,17 @@ const App = () => {
           element={<ResetPassword />}
         />
         <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
-        <Route path="/admin/userlist" element={<UserListScreen />} />
+        <Route
+          path="/admin/userlist/:pageNumber"
+          element={<UserListScreen />}
+          exact
+        />
+        <Route path="/admin/userlist" element={<UserListScreen />} exact />
+        <Route
+          path="/admin/userlist/search/:keyword/page/:pageNumber"
+          element={<UserListScreen />}
+          exact
+        />
         <Route path="/login" element={<LoginScreen />} />
         <Route path="/register" element={<RegisterScreen />} />
         <Route path="/" element={<Home />} />

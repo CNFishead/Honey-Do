@@ -8,10 +8,10 @@ import User from "../models/User.js";
   @access    Private/Admin
 */
 export const getUsers = asyncHandler(async (req, res, next) => {
-  const pageSize = 10;
+  const pageSize = 5;
   const page = Number(req.query.pageNumber) || 1;
   const keyword = req.query.keyword
-    ? { name: { $regex: req.query.keyword, $options: "i" } }
+    ? { firstName: { $regex: req.query.keyword, $options: "i" } }
     : {};
   const count = await User.countDocuments({ ...keyword });
   const users = await User.find({ ...keyword })
@@ -30,6 +30,7 @@ export const getUser = asyncHandler(async (req, res, next) => {
       _id: user._id,
       firstName: user.firstName,
       lastName: user.lastName,
+      sex: user.sex,
       email: user.email,
       isAdmin: user.isAdmin,
     });
@@ -49,6 +50,7 @@ export const getUserProfile = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      sex: user.sex,
       isAdmin: user.isAdmin,
     });
   } else {
@@ -122,6 +124,7 @@ export const updateUser = asyncHandler(async (req, res) => {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
     user.isAdmin = req.body.isAdmin ?? user.isAdmin;
+    user.sex = req.body.sex || user.sex;
     if (req.body.password) {
       user.password = req.body.password;
     }
@@ -130,6 +133,7 @@ export const updateUser = asyncHandler(async (req, res) => {
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
+      sex: updatedUser.sex,
       isAdmin: updatedUser.isAdmin,
     });
   } else {

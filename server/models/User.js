@@ -12,6 +12,10 @@ const UserSchema = new mongoose.Schema(
     lastName: {
       type: String,
     },
+    sex: {
+      type: String,
+      enum: ["male", "female"],
+    },
     email: {
       type: String,
       match: [
