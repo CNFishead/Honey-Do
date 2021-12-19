@@ -133,26 +133,31 @@ const UserListScreen = () => {
             </tbody>
           </Table>
         )}
-        {pages > 1 && (
-          <Pagination>
-            {[...Array(pages).keys()].map((x) => (
-              <LinkContainer
-                key={x + 1}
-                to={
-                  userInfo.isAdmin
-                    ? search
-                      ? `/admin/userlist/search/${search}/page/${x + 1}`
+        <Container>
+          {pages > 1 && (
+            <Pagination style={{ justifyContent: "center", fontSize: ".8rem" }}>
+              {[...Array(pages).keys()].map((x) => (
+                <LinkContainer
+                  key={x + 1}
+                  to={
+                    userInfo.isAdmin
+                      ? search
+                        ? `/admin/userlist/search/${search}/page/${x + 1}`
+                        : `/admin/userlist/${x + 1}`
                       : `/admin/userlist/${x + 1}`
-                    : `/admin/userlist/${x + 1}`
-                }
-              >
-                <Pagination.Item active={x + 1 === page}>
-                  {x + 1}
-                </Pagination.Item>
-              </LinkContainer>
-            ))}
-          </Pagination>
-        )}
+                  }
+                >
+                  <Pagination.Item
+                    active={x + 1 === page}
+                    style={{ padding: "0" }}
+                  >
+                    {x + 1}
+                  </Pagination.Item>
+                </LinkContainer>
+              ))}
+            </Pagination>
+          )}
+        </Container>
       </Container>
     </>
   );

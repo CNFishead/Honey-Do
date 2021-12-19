@@ -86,7 +86,9 @@ const LoginScreen = ({ location }) => {
           </Link>
         </Container>
         <Container style={{ paddingTop: "1.5%" }}>
-          <span style={{ fontSize: "1.5em" }}>Not a user yet? </span>
+          <span style={{ fontSize: "1.25rem", fontFamily: "sans-serif" }}>
+            Not a user yet?{" "}
+          </span>
           <Link
             style={{ textDecoration: "none" }}
             className="gradient-text"

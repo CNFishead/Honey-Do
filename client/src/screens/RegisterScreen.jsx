@@ -3,9 +3,12 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
 import { Form, Button, Row, Col, FloatingLabel } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { usePasswordValidation } from "../hooks/usePasswordValidation";
+// Components
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
+// Actions
 import { register } from "../actions/userActions";
 
 const RegisterScreen = () => {
@@ -17,7 +20,11 @@ const RegisterScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [gender, setGender] = useState("");
   const [message, setMessage] = useState(null);
-
+  const [validLength, hasNumber, upperCase, lowerCase, match, specialChar] =
+    usePasswordValidation({
+      password1: password,
+      password2: confirmPassword,
+    });
   const dispatch = useDispatch();
 
   const userRegister = useSelector((state) => state.userRegister);
@@ -33,8 +40,15 @@ const RegisterScreen = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      setMessage("Passwords do not match");
+    if (
+      !validLength &&
+      !match &&
+      !hasNumber &&
+      !upperCase &&
+      !lowerCase &&
+      !specialChar
+    ) {
+      setMessage("Password Validation failed");
     } else {
       let user = { firstName, lastName, email, password, gender };
       dispatch(register(user));
@@ -104,6 +118,52 @@ const RegisterScreen = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           ></Form.Control>
+          {password ? (
+            <Form.Text
+              style={{
+                fontFamily: "serif",
+                fontSize: ".9rem",
+              }}
+            >
+              Password must be{" "}
+              <span
+                className={validLength ? `valid` : `invalid`}
+                style={{ fontWeight: "bold" }}
+              >
+                6 characters long
+              </span>
+              , have atleast{" "}
+              <span
+                className={specialChar ? `valid` : `invalid`}
+                style={{ fontWeight: "bold" }}
+              >
+                1 special character
+              </span>
+              ,{" "}
+              <span
+                className={upperCase ? `valid` : `invalid`}
+                style={{ fontWeight: "bold" }}
+              >
+                Upper
+              </span>{" "}
+              and{" "}
+              <span
+                className={lowerCase ? `valid` : `invalid`}
+                style={{ fontWeight: "bold" }}
+              >
+                lower
+              </span>{" "}
+              case,{" "}
+              <span
+                className={hasNumber ? `valid` : `invalid`}
+                style={{ fontWeight: "bold" }}
+              >
+                include numbers
+              </span>
+            </Form.Text>
+          ) : (
+            <div></div>
+          )}
         </Form.Group>
 
         <Form.Group controlId="confirmPassword">
@@ -115,6 +175,25 @@ const RegisterScreen = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           ></Form.Control>
+          {match ? (
+            <Form.Text>
+              <span
+                className="valid"
+                style={{ fontFamily: "sans-serif", fontSize: ".8rem" }}
+              >
+                <i class="fas fa-check" /> Looks Good
+              </span>
+            </Form.Text>
+          ) : (
+            <Form.Text>
+              <span
+                className="invalid"
+                style={{ fontFamily: "sans-serif", fontSize: ".8rem" }}
+              >
+                <i class="fas fa-exclamation-circle" /> Passwords must Match
+              </span>
+            </Form.Text>
+          )}
         </Form.Group>
 
         <Button

@@ -96,7 +96,7 @@ body {
   font-size: 0.9rem;
   color: hsla(260, 2%, 25%, 0.7);
   width: 70%;
-  margin-bottom: 20px;
+  margin-bottom: 2%;
 }
 
 .form-container input {
@@ -125,4 +125,13 @@ li {
   position: relative;
   padding: 0.5rem;
   font-size: 2em;
+}
+
+/* -------------------------------------------------------Register Screen----------------------------------------------------------------- */
+
+.valid {
+  color: rgb(3, 102, 3);
+}
+.invalid {
+  color: rgb(150, 3, 3);
 }

@@ -62,6 +62,7 @@ const UserEditScreen = () => {
         setFirstName(user.firstName);
         setLastName(user.lastName);
         setEmail(user.email);
+        setIsAdmin(user.isAdmin);
       }
     }
   }, [navigate, id, dispatch, user, successUpdate, userInfo]);
@@ -165,6 +166,7 @@ const UserEditScreen = () => {
                   type="checkbox"
                   label="Is Admin"
                   checked={isAdmin}
+                  disabled={id === userInfo._id}
                   onChange={(e) => setIsAdmin(e.target.checked)}
                 ></Form.Check>
               </Form.Group>

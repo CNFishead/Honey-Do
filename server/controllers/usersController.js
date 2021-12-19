@@ -8,7 +8,7 @@ import User from "../models/User.js";
   @access    Private/Admin
 */
 export const getUsers = asyncHandler(async (req, res, next) => {
-  const pageSize = 5;
+  const pageSize = 10;
   const page = Number(req.query.pageNumber) || 1;
   const keyword = req.query.keyword
     ? { firstName: { $regex: req.query.keyword, $options: "i" } }
@@ -48,7 +48,8 @@ export const getUserProfile = asyncHandler(async (req, res) => {
   if (user) {
     res.json({
       _id: user._id,
-      name: user.name,
+      firstName: user.firstName,
+      lastName: user.lastName,
       email: user.email,
       sex: user.sex,
       isAdmin: user.isAdmin,

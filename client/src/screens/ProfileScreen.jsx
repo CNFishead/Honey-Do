@@ -1,22 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, Row, Col, Table } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
+import { Form, Button, Row, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { usePasswordValidation } from "../hooks/usePasswordValidation";
+// components
 import Message from "../components/Message";
 import Loader from "../components/Loader";
+import FormContainer from "../components/FormContainer";
+// actions/constants
 import { getUserDetails, updateUserProfile } from "../actions/userActions";
 import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants";
-import { useNavigate } from "react-router-dom";
 
 const ProfileScreen = () => {
   // hooks
   const navigate = useNavigate();
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [gender, setGender] = useState("");
   const [message, setMessage] = useState(null);
-
+  const [validLength, hasNumber, upperCase, lowerCase, match, specialChar] =
+    usePasswordValidation({
+      password1: password,
+      password2: confirmPassword,
+    });
+  console.log(firstName);
   const dispatch = useDispatch();
 
   const { loading, error, user } = useSelector((state) => state.userDetails);
@@ -31,7 +41,7 @@ const ProfileScreen = () => {
     if (!userInfo) {
       navigate(`/login`);
     } else {
-      if (!user.name || !user.name || success) {
+      if (!user.firstName || success) {
         //Here the route will connect to /api/users/profile instead of
         // /api/users/{id}
         dispatch({ type: USER_UPDATE_PROFILE_RESET });
@@ -40,40 +50,74 @@ const ProfileScreen = () => {
         // dispatch(listMyOrders());
       } else {
         //Else Fill forms
-        setName(user.name);
+        setFirstName(user.firstName);
+        setLastName(user.lastName);
+        setGender(user.sex);
         setEmail(user.email);
+        console.log(user.firstName);
       }
     }
-  }, [navigate, userInfo, dispatch, success]);
+  }, [navigate, userInfo, dispatch, success, user]);
 
   const submitHandler = (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setMessage("Passwords do not match");
     } else {
-      dispatch(updateUserProfile({ id: user._id, name, email, password }));
+      dispatch(
+        updateUserProfile({
+          id: user._id,
+          firstName,
+          lastName,
+          email,
+          password,
+        })
+      );
     }
   };
 
   return (
     <Row>
-      <Col md={3}>
+      {message && <Message variant="danger">{message}</Message>}
+      {error && <Message variant="danger">{error}</Message>}
+      {success && <Message variant="success">Profile Updated</Message>}
+      {loading && <Loader />}
+      <FormContainer>
         <h3>User Profile</h3>
-        {message && <Message variant="danger">{message}</Message>}
-        {error && <Message variant="danger">{error}</Message>}
-        {success && <Message variant="success">Profile Updated</Message>}
-        {loading && <Loader />}
-        <Form onSubmit={submitHandler}>
+        <Form onSubmit={submitHandler} style={{ fontFamily: "sans-serif" }}>
           <Form.Group controlId="name">
-            <Form.Label>Name</Form.Label>
+            <Form.Label>First Name</Form.Label>
             <Form.Control
               type="name"
-              placeholder="Enter name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter First Name"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
             ></Form.Control>
           </Form.Group>
-
+          <Form.Group controlId="firstName">
+            <Form.Label>Last Name</Form.Label>
+            <Form.Control
+              type="name"
+              placeholder="Enter Last Name"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            ></Form.Control>
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Sex</Form.Label>
+            <Form.Select
+              aria-label="select gender"
+              onChange={(e) => {
+                setGender(e.target.value);
+              }}
+              value={gender}
+            >
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </Form.Select>
+          </Form.Group>
           <Form.Group controlId="email">
             <Form.Label>Email Address</Form.Label>
             <Form.Control
@@ -81,6 +125,7 @@ const ProfileScreen = () => {
               placeholder="Enter email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             ></Form.Control>
           </Form.Group>
 
@@ -91,7 +136,54 @@ const ProfileScreen = () => {
               placeholder="Enter password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             ></Form.Control>
+            {password ? (
+              <Form.Text
+                style={{
+                  fontFamily: "serif",
+                  fontSize: ".9rem",
+                }}
+              >
+                Password must be{" "}
+                <span
+                  className={validLength ? `valid` : `invalid`}
+                  style={{ fontWeight: "bold" }}
+                >
+                  6 characters long
+                </span>
+                , have atleast{" "}
+                <span
+                  className={specialChar ? `valid` : `invalid`}
+                  style={{ fontWeight: "bold" }}
+                >
+                  1 special character
+                </span>
+                ,{" "}
+                <span
+                  className={upperCase ? `valid` : `invalid`}
+                  style={{ fontWeight: "bold" }}
+                >
+                  Upper
+                </span>{" "}
+                and{" "}
+                <span
+                  className={lowerCase ? `valid` : `invalid`}
+                  style={{ fontWeight: "bold" }}
+                >
+                  lower
+                </span>{" "}
+                case,{" "}
+                <span
+                  className={hasNumber ? `valid` : `invalid`}
+                  style={{ fontWeight: "bold" }}
+                >
+                  include numbers
+                </span>
+              </Form.Text>
+            ) : (
+              <div></div>
+            )}
           </Form.Group>
 
           <Form.Group controlId="confirmPassword">
@@ -101,65 +193,40 @@ const ProfileScreen = () => {
               placeholder="Confirm password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+              required
             ></Form.Control>
+            {password !== "" ? (
+              match ? (
+                <Form.Text>
+                  <span
+                    className="valid"
+                    style={{ fontFamily: "sans-serif", fontSize: ".8rem" }}
+                  >
+                    <i className="fas fa-check" /> Looks Good
+                  </span>
+                </Form.Text>
+              ) : (
+                <Form.Text>
+                  <span
+                    className="invalid"
+                    style={{ fontFamily: "sans-serif", fontSize: ".8rem" }}
+                  >
+                    <i className="fas fa-exclamation-circle" /> Passwords must
+                    Match
+                  </span>
+                </Form.Text>
+              )
+            ) : (
+              <div></div>
+            )}
           </Form.Group>
-
-          <Button type="submit" variant="primary">
-            Update
-          </Button>
+          <Container style={{ padding: "5%" }}>
+            <Button type="submit" variant="success" style={{ width: "75%" }}>
+              Update
+            </Button>
+          </Container>
         </Form>
-      </Col>
-      {/* <Col md={9}>
-        <h3>My Orders</h3>
-        {loadingOrders ? (
-          <Loader />
-        ) : errorOrders ? (
-          <Message variant="danger">{errorOrders}</Message>
-        ) : (
-          <Table striped bordered hover responsive className="table-sm">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>DATE</th>
-                <th>TOTAL</th>
-                <th>PAID</th>
-                <th>DELIEVERED</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {orders.map((order) => (
-                <tr key={order._id}>
-                  <td>{order._id}</td>
-                  <td>{order.createdAt.substring(0, 10)}</td>
-                  <td>{order.totalPrice}</td>
-                  <td>
-                    {order.isPaid ? (
-                      order.paidAt.substring(0, 10)
-                    ) : (
-                      <i className="fas fa-times" style={{ color: "red" }}></i>
-                    )}
-                  </td>
-                  <td>
-                    {order.isDelivered ? (
-                      order.deliveredAt.substring(0, 10)
-                    ) : (
-                      <i className="fas fa-times" style={{ color: "red" }}></i>
-                    )}
-                  </td>
-                  <td>
-                    <LinkContainer to={`/order/${order._id}`}>
-                      <Button className="btn-sm" variant="light">
-                        Details
-                      </Button>
-                    </LinkContainer>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        )}
-      </Col> */}
+      </FormContainer>
     </Row>
   );
 };
