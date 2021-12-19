@@ -142,7 +142,7 @@ const UserListScreen = () => {
                   userInfo.isAdmin
                     ? search
                       ? `/admin/userlist/search/${search}/page/${x + 1}`
-                      : `/page/${x + 1}`
+                      : `/admin/userlist/${x + 1}`
                     : `/admin/userlist/${x + 1}`
                 }
               >

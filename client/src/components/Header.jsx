@@ -22,14 +22,15 @@ const Header = () => {
           </Navbar.Brand>
         </LinkContainer>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse
-          id="basic-navbar-nav"
-          style={{ justifyContent: "end", fontSize: "1.5em" }}
-        >
-          <Nav className="ml-auto">
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav
+            className="ml-auto"
+            style={{ width: "100%", justifyContent: "end" }}
+          >
             {userInfo ? (
               <NavDropdown
-                title={userInfo.firstName + " " + userInfo.lastName}
+                className="heading-link"
+                title={<h3>{userInfo.firstName + " " + userInfo.lastName}</h3>}
                 id="username"
               >
                 <LinkContainer to="/profile">
@@ -40,11 +41,22 @@ const Header = () => {
                 </NavDropdown.Item>
               </NavDropdown>
             ) : (
-              <LinkContainer to="/login">
-                <Nav.Link>
-                  <i className="fas fa-user"></i> Sign-In
-                </Nav.Link>
-              </LinkContainer>
+              <>
+                <LinkContainer to="/login" className="heading-link">
+                  <Nav.Link>
+                    <h3>
+                      <i className="fas fa-user"></i> Sign-In
+                    </h3>
+                  </Nav.Link>
+                </LinkContainer>
+                <LinkContainer to="/register" className="heading-link">
+                  <Nav.Link>
+                    <h3>
+                      <i className="fas fa-user"></i> Register
+                    </h3>
+                  </Nav.Link>
+                </LinkContainer>
+              </>
             )}
             {userInfo && userInfo.isAdmin && (
               <NavDropdown title="Admin" id="adminmenu">

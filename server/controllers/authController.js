@@ -11,20 +11,14 @@ import crypto from "crypto";
   @access Public
 */
 const register = asyncHandler(async (req, res, next) => {
-  // Destructure body data
-  const { firstName, lastName, email, password } = req.body;
-
   // create user
-  const user = await User.create({
-    firstName,
-    lastName,
-    email,
-    password,
-  });
+  const user = await User.create(req.body);
   if (user) {
     res.status(201).json({
       _id: user._id,
-      name: user.name,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      gender: user.gender,
       email: user.email,
       isAdmin: user.isAdmin,
       token: generateToken(user._id),

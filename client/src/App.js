@@ -6,6 +6,10 @@ import Home from "./screens/Home";
 import LoginScreen from "./screens/LoginScreen";
 import Reset from "./screens/Reset";
 import ResetPassword from "./screens/ResetPassword";
+import RegisterScreen from "./screens/RegisterScreen";
+import UserEditScreen from "./screens/UserEditScreen";
+import UserListScreen from "./screens/UserListScreen";
+import ProfileScreen from "./screens/ProfileScreen";
 
 // Components
 import Header from "./components/Header";
@@ -13,9 +17,6 @@ import Footer from "./components/Footer";
 
 // css styles
 import "./App.css";
-import RegisterScreen from "./screens/RegisterScreen";
-import UserEditScreen from "./screens/UserEditScreen";
-import UserListScreen from "./screens/UserListScreen";
 
 const App = () => {
   return (
@@ -39,6 +40,7 @@ const App = () => {
           element={<UserListScreen />}
           exact
         />
+        <Route path="/profile" element={<ProfileScreen />} />
         <Route path="/login" element={<LoginScreen />} />
         <Route path="/register" element={<RegisterScreen />} />
         <Route path="/" element={<Home />} />

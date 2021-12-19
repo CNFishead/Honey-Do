@@ -50,6 +50,8 @@ body {
   border-radius: 20% 5% 20% 5%/5% 20% 25% 20%;
   background-color: #fdcb6e;
   font-size: 1.5rem;
+  display: inline;
+  width: 100%;
 }
 .heading-link h3:hover {
   background-color: #f8bd4e;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
-import { Form, Button, Row, Col } from "react-bootstrap";
+import { Form, Button, Row, Col, FloatingLabel } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
@@ -15,6 +15,7 @@ const RegisterScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [gender, setGender] = useState("");
   const [message, setMessage] = useState(null);
 
   const dispatch = useDispatch();
@@ -35,7 +36,8 @@ const RegisterScreen = () => {
     if (password !== confirmPassword) {
       setMessage("Passwords do not match");
     } else {
-      dispatch(register(firstName, lastName, email, password));
+      let user = { firstName, lastName, email, password, gender };
+      dispatch(register(user));
     }
   };
 
@@ -69,7 +71,19 @@ const RegisterScreen = () => {
             onChange={(e) => setLastName(e.target.value)}
           ></Form.Control>
         </Form.Group>
-
+        <FloatingLabel controlId="gender" label="Gender">
+          <Form.Select
+            aria-label="select gender"
+            onChange={(e) => {
+              setGender(e.target.value);
+            }}
+            value={gender}
+          >
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </Form.Select>
+        </FloatingLabel>
         <Form.Group controlId="email">
           <Form.Label>Email Address</Form.Label>
           <Form.Control
