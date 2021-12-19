@@ -5,9 +5,12 @@ import crypto from "crypto";
 
 const UserSchema = new mongoose.Schema(
   {
-    name: {
+    firstName: {
       type: String,
       required: [true, "Please add a name"],
+    },
+    lastName: {
+      type: String,
     },
     email: {
       type: String,
@@ -18,10 +21,9 @@ const UserSchema = new mongoose.Schema(
       required: [true, "Please add an email"],
       unique: true,
     },
-    role: {
-      type: String,
-      enum: ["admin", "user"],
-      default: "user",
+    isAdmin: {
+      type: Boolean,
+      default: false,
     },
     password: {
       type: String,

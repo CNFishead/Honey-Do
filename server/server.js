@@ -3,18 +3,12 @@ import dotenv from "dotenv";
 import colors from "colors";
 import morgan from "morgan";
 import connectDB from "./config/db.js";
-import fileupload from "express-fileupload";
 import path from "path";
 import cors from "cors";
 
 // import routes
 import authRoutes from "./routes/authRoutes.js";
-import projectRoutes from "./routes/projectRoutes.js";
-import certRoutes from "./routes/certRoutes.js";
-import expRoutes from "./routes/expRoutes.js";
-import uploadRoutes from "./routes/uploadRoutes.js";
-import blogRoutes from "./routes/blogRoutes.js";
-
+import userRoutes from "./routes/userRoutes.js";
 
 // import middleware
 import errorHandler from "./middleware/error.js";
@@ -38,8 +32,6 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-// Allows use of the fileUpload middleware
-app.use(fileupload());
 // Sanitize Data
 app.use(mongoSanitize());
 // Set Security headers
@@ -53,11 +45,7 @@ app.use(cors());
 
 // API Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/projects", projectRoutes);
-app.use("/api/certs", certRoutes);
-app.use("/api/exp", expRoutes);
-app.use("/api/uploads", uploadRoutes);
-app.use("/api/blog", blogRoutes);
+app.use("/api/users", userRoutes);
 
 // Set static folder
 const __dirname = path.resolve();

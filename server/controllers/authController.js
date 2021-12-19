@@ -2,6 +2,7 @@ import ErrorResponse from "../utils/errorResponse.js";
 import asyncHandler from "../middleware/async.js";
 import User from "../models/User.js";
 import sendEmail from "../utils/sendEmail.js";
+import generateToken from "../utils/generateToken.js";
 import crypto from "crypto";
 
 /*
@@ -11,15 +12,27 @@ import crypto from "crypto";
 */
 const register = asyncHandler(async (req, res, next) => {
   // Destructure body data
-  const { name, email, password } = req.body;
+  const { firstName, lastName, email, password } = req.body;
 
   // create user
   const user = await User.create({
-    name,
+    firstName,
+    lastName,
     email,
     password,
   });
-  sendTokenResponse(user, 200, res);
+  if (user) {
+    res.status(201).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      token: generateToken(user._id),
+    });
+  } else {
+    res.status(400);
+    throw new Error("Invalid user data");
+  }
 });
 
 /*
@@ -40,13 +53,21 @@ const login = asyncHandler(async (req, res, next) => {
   if (!user) {
     return next(new ErrorResponse(`Invalid Credentials`, 401));
   }
-  // Check password
-  const isMatch = await user.matchPassword(password);
-  if (!isMatch) {
-    return next(new ErrorResponse(`Invalid Credentials`, 401));
-  }
 
-  sendTokenResponse(user, 200, res);
+  // User Auth
+  if (user && (await user.matchPassword(password))) {
+    res.json({
+      _id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      token: generateToken(user._id),
+    });
+  } else {
+    res.status(401);
+    throw new Error("Invalid email or password");
+  }
 });
 
 /* @desc   Get current logged in user

@@ -13,6 +13,9 @@ import Footer from "./components/Footer";
 
 // css styles
 import "./App.css";
+import RegisterScreen from "./screens/RegisterScreen";
+import UserEditScreen from "./screens/UserEditScreen";
+import UserListScreen from "./screens/UserListScreen";
 
 const App = () => {
   return (
@@ -24,7 +27,10 @@ const App = () => {
           path="/auth/resetpassword/:resettoken"
           element={<ResetPassword />}
         />
+        <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
+        <Route path="/admin/userlist" element={<UserListScreen />} />
         <Route path="/login" element={<LoginScreen />} />
+        <Route path="/register" element={<RegisterScreen />} />
         <Route path="/" element={<Home />} />
       </Routes>
       <Footer />

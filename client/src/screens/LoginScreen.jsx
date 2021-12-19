@@ -13,14 +13,14 @@ const LoginScreen = ({ location }) => {
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
-  // const userLogin = useSelector((state) => state.userLogin);
-  // const { loading, error, userInfo } = userLogin;
+  const userLogin = useSelector((state) => state.userLogin);
+  const { loading, error, userInfo } = userLogin;
 
-  // useEffect(() => {
-  // if (userInfo) {
-  //   navigate("/");
-  // }
-  // }, [navigate, userInfo]);
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/");
+    }
+  }, [navigate, userInfo]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -31,9 +31,9 @@ const LoginScreen = ({ location }) => {
     <Container>
       <FormContainer>
         <h1>Login</h1>
-        {/* {error && <Message variant="danger">{error}</Message>} */}
-        {/* {loading && <Loader />} */}
-        <Form onSubmit={submitHandler}>
+        {error && <Message variant="danger">{error}</Message>}
+        {loading && <Loader />}
+        <Form onSubmit={submitHandler} className="form form-container">
           <Form.Group controlId="email">
             <FloatingLabel
               controlId="floatingInput"
@@ -71,7 +71,7 @@ const LoginScreen = ({ location }) => {
             type="submit"
             variant="dark"
             className="styled-button"
-            style={{ width: "100%", fontSize: "1.5em" }}
+            style={{ width: "100%", fontSize: "1.25em" }}
           >
             Sign-In
           </Button>

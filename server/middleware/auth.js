@@ -37,17 +37,11 @@ export const protect = asyncHandler(async (req, res, next) => {
 });
 
 // Grant access to specific roles
-export const authorize = (...roles) => {
-  return (req, res, next) => {
-    // check to see if role is included in the roles passed in
-    if (!roles.includes(req.user.role)) {
-      return next(
-        new ErrorResponse(
-          `User role ${req.user.role} is not authorized to access this route`,
-          403
-        )
-      );
-    }
+export const authorize = (req, res, next) => {
+  if (req.user && req.user.isAdmin) {
     next();
-  };
+  } else {
+    res.status(401);
+    throw new Error("Not authorized Admin");
+  }
 };
