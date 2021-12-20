@@ -9,12 +9,13 @@ import FormContainer from "../components/FormContainer";
 
 const LoginScreen = ({ location }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // component state
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const dispatch = useDispatch();
-  const userLogin = useSelector((state) => state.userLogin);
-  const { loading, error, userInfo } = userLogin;
+  // App state
+  const { loading, error, userInfo } = useSelector((state) => state.userLogin);
 
   useEffect(() => {
     if (userInfo) {
