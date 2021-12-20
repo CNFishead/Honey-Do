@@ -17,7 +17,7 @@ import { useParams } from "react-router-dom";
 
 const UserListScreen = () => {
   // pulls the pageNumber and Keyword search params
-  const { pageNumber, keyword } = useParams();
+  const { pageNumber = 1, keyword = "" } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
@@ -32,8 +32,8 @@ const UserListScreen = () => {
   const { success } = useSelector((state) => state.userUpdate);
 
   useEffect(() => {
-    if (userInfo && userInfo.isAdmin) {
-      dispatch(listUsers(keyword || "", pageNumber || 1));
+    if (userInfo || userInfo.isAdmin) {
+      dispatch(listUsers(keyword, pageNumber));
     } else {
       navigate("/login");
     }
@@ -137,6 +137,7 @@ const UserListScreen = () => {
                         onClick={() => inactiveHandler(user._id)}
                         variant="light"
                         className="btn-sm"
+                        disabled={userInfo._id === user._id}
                       >
                         <i
                           className="fas fa-check"
@@ -148,6 +149,7 @@ const UserListScreen = () => {
                         onClick={() => inactiveHandler(user._id)}
                         variant="light"
                         className="btn-sm"
+                        disabled={userInfo._id === user._id}
                       >
                         <i
                           className="fas fa-times"
@@ -177,7 +179,7 @@ const UserListScreen = () => {
           </Table>
         )}
         <Container>
-          {pages > 1 && (
+          {userInfo && pages > 1 && (
             <Pagination style={{ justifyContent: "center", fontSize: ".8rem" }}>
               {[...Array(pages).keys()].map((x) => (
                 <LinkContainer
