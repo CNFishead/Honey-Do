@@ -8,7 +8,11 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
 // actions/constants
-import { getUserDetails, updateUserProfile } from "../actions/userActions";
+import {
+  getUserDetails,
+  inactive,
+  updateUserProfile,
+} from "../actions/userActions";
 import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants";
 
 const ProfileScreen = () => {
@@ -26,7 +30,6 @@ const ProfileScreen = () => {
       password1: password,
       password2: confirmPassword,
     });
-  console.log(firstName);
   const dispatch = useDispatch();
 
   const { loading, error, user } = useSelector((state) => state.userDetails);
@@ -54,10 +57,9 @@ const ProfileScreen = () => {
         setLastName(user.lastName);
         setGender(user.sex);
         setEmail(user.email);
-        console.log(user.firstName);
       }
     }
-  }, [navigate, userInfo, dispatch, success, user]);
+  }, [navigate, userInfo, dispatch, success, user, loading]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -69,10 +71,20 @@ const ProfileScreen = () => {
           id: user._id,
           firstName,
           lastName,
+          gender,
           email,
           password,
         })
       );
+    }
+  };
+  const inactiveHandler = (id) => {
+    if (
+      window.confirm(
+        "This flips your account inactive, doing so removes the ability for you to log in, to continue using the service youll either have to create a new account or contact support to unlock your account"
+      )
+    ) {
+      dispatch(inactive(id));
     }
   };
 
@@ -136,7 +148,6 @@ const ProfileScreen = () => {
               placeholder="Enter password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
             ></Form.Control>
             {password ? (
               <Form.Text
@@ -193,7 +204,6 @@ const ProfileScreen = () => {
               placeholder="Confirm password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              required
             ></Form.Control>
             {password !== "" ? (
               match ? (
@@ -223,6 +233,16 @@ const ProfileScreen = () => {
           <Container style={{ padding: "5%" }}>
             <Button type="submit" variant="success" style={{ width: "75%" }}>
               Update
+            </Button>
+          </Container>
+          <Container>
+            <Button
+              onClick={() => inactiveHandler(user._id)}
+              variant="danger"
+              style={{ width: "75%" }}
+              disabled={userInfo.isAdmin}
+            >
+              Delete
             </Button>
           </Container>
         </Form>

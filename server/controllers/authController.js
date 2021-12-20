@@ -43,9 +43,12 @@ const login = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse(`Please send an email and a Password`, 400));
   }
   // Check if user in system
+  // Check if user deleted
   const user = await User.findOne({ email }).select("+password");
-  if (!user) {
-    return next(new ErrorResponse(`Invalid Credentials`, 401));
+  if (!user || user.isActive === false) {
+    return res
+      .status(401)
+      .json({ message: "Invalid Credentials / User Not Found" });
   }
 
   // User Auth

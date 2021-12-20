@@ -6,6 +6,8 @@ import {
   deleteUser,
   getUserProfile,
   updateUserProfile,
+  removeAccount,
+  activateAccount,
 } from "../controllers/usersController.js";
 import { protect, authorize } from "../middleware/auth.js";
 const router = express.Router({ mergeParams: true });
@@ -21,5 +23,6 @@ router
   .get(protect, authorize, getUser)
   .put(updateUser)
   .delete(deleteUser);
-
+router.route("/:id/delete").put(removeAccount);
+router.route("/:id/activate").put(activateAccount);
 export default router;

@@ -11,7 +11,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { deleteUser, listUsers } from "../actions/userActions";
+import { deleteUser, inactive, listUsers } from "../actions/userActions";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
 
@@ -27,6 +27,7 @@ const UserListScreen = () => {
   );
   const { userInfo } = useSelector((state) => state.userLogin);
   const { success: successDelete } = useSelector((state) => state.userDelete);
+  const { success } = useSelector((state) => state.userUpdate);
 
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
@@ -34,7 +35,15 @@ const UserListScreen = () => {
     } else {
       navigate("/login");
     }
-  }, [dispatch, userInfo, successDelete, navigate, pageNumber, keyword]);
+  }, [
+    dispatch,
+    userInfo,
+    successDelete,
+    navigate,
+    pageNumber,
+    keyword,
+    success,
+  ]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -47,6 +56,11 @@ const UserListScreen = () => {
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure? This action cannot be undone!")) {
       dispatch(deleteUser(id));
+    }
+  };
+  const inactiveHandler = (id) => {
+    if (window.confirm("Are you sure you?")) {
+      dispatch(inactive(id));
     }
   };
 
@@ -92,6 +106,7 @@ const UserListScreen = () => {
                 <th>Name</th>
                 <th>Email</th>
                 <th>Admin</th>
+                <th>Inactive/Active</th>
                 <th>Edit / Delete</th>
               </tr>
             </thead>
@@ -103,7 +118,7 @@ const UserListScreen = () => {
                   <td>
                     <a href={`mailto:${user.email}`}>{user.email}</a>
                   </td>
-                  <td>
+                  <td style={{ textAlign: "center" }}>
                     {user.isAdmin ? (
                       <i
                         className="fas fa-check"
@@ -113,7 +128,32 @@ const UserListScreen = () => {
                       <i className="fas fa-times" style={{ color: "red" }}></i>
                     )}
                   </td>
-                  <td>
+                  <td style={{ textAlign: "center" }}>
+                    {user.isActive ? (
+                      <Button
+                        onClick={() => inactiveHandler(user._id)}
+                        variant="light"
+                        className="btn-sm"
+                      >
+                        <i
+                          className="fas fa-check"
+                          style={{ color: "green" }}
+                        ></i>
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={() => inactiveHandler(user._id)}
+                        variant="light"
+                        className="btn-sm"
+                      >
+                        <i
+                          className="fas fa-times"
+                          style={{ color: "red" }}
+                        ></i>
+                      </Button>
+                    )}
+                  </td>
+                  <td style={{ textAlign: "center" }}>
                     <LinkContainer to={`/admin/user/${user._id}/edit`}>
                       <Button variant="light" className="btn-sm">
                         <i className="fas fa-edit"></i>

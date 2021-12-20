@@ -182,6 +182,45 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
     });
   }
 };
+export const inactive = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_UPDATE_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(`/api/users/${id}/delete`, config);
+
+    dispatch({
+      type: USER_UPDATE_SUCCESS,
+      payload: data,
+    });
+    //Changes the localStorage information to update the name if information changes.
+    localStorage.setItem("userInfo", JSON.stringify(data));
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
+    }
+    dispatch({
+      type: USER_UPDATE_FAIL,
+      payload: message,
+    });
+  }
+};
 
 export const listUsers =
   (keyword, pageNumber = 1) =>
