@@ -25,7 +25,9 @@ const UserListScreen = () => {
   const { loading, error, users, pages, page } = useSelector(
     (state) => state.userList
   );
-  const { userInfo } = useSelector((state) => state.userLogin);
+  const { userInfo, loading: userLoading } = useSelector(
+    (state) => state.userLogin
+  );
   const { success: successDelete } = useSelector((state) => state.userDelete);
   const { success } = useSelector((state) => state.userUpdate);
 
@@ -43,6 +45,7 @@ const UserListScreen = () => {
     pageNumber,
     keyword,
     success,
+    userLoading,
   ]);
 
   const submitHandler = (e) => {

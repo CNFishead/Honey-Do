@@ -9,7 +9,7 @@ import User from "../models/User.js";
   @access    Private/Admin
 */
 export const getUsers = asyncHandler(async (req, res, next) => {
-  const pageSize = 10;
+  const pageSize = 5;
   const page = Number(req.query.pageNumber) || 1;
   const keyword = req.query.keyword
     ? { firstName: { $regex: req.query.keyword, $options: "i" } }
