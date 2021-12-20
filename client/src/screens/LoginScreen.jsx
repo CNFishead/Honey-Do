@@ -93,7 +93,7 @@ const LoginScreen = ({ location }) => {
           <Link
             style={{ textDecoration: "none" }}
             className="gradient-text"
-            to="/resetpassword"
+            to="/register"
           >
             <span style={{ fontSize: "2.5em", fontWeight: "bold" }}>
               Register!
