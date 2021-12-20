@@ -9,6 +9,7 @@ import cors from "cors";
 // import routes
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import todoRoutes from "./routes/todoRoutes.js";
 
 // import middleware
 import errorHandler from "./middleware/error.js";
@@ -46,6 +47,7 @@ app.use(cors());
 // API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/todo", todoRoutes);
 
 // Set static folder
 const __dirname = path.resolve();
