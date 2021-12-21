@@ -35,7 +35,7 @@ const userInfoFromStorage = localStorage.getItem("userInfo")
 const todoInfoFromStorage = localStorage.getItem("todoLists")
   ? JSON.parse(localStorage.getItem("todoLists"))
   : {
-      contacts: [],
+      todos: [],
       current: null,
       filtered: null,
       error: null,

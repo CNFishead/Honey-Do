@@ -11,7 +11,9 @@ const Home = () => {
   const dispatch = useDispatch();
   // App state
   const { userInfo } = useSelector((state) => state.userLogin);
-  const { loading, success, todos } = useSelector((state) => state.honeyDoList);
+  const { loading, success, todoLists } = useSelector(
+    (state) => state.honeyDoList
+  );
   useEffect(() => {
     // Check if a user is logged in
     if (!userInfo) {
@@ -51,8 +53,8 @@ const Home = () => {
                 </Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body style={{ overflow: "hidden", scrolling: "true" }}>
-                {todos ? (
-                  todos.map((todolist) => {
+                {todoLists.todos ? (
+                  todoLists.todos.map((todolist) => {
                     return (
                       <div
                         className="heading-link"
