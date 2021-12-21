@@ -11,7 +11,7 @@ const Home = () => {
   const dispatch = useDispatch();
   // App state
   const { userInfo } = useSelector((state) => state.userLogin);
-  const { loading, success, todos } = useSelector((state) => state.getTodos);
+  const { loading, success, todos } = useSelector((state) => state.honeyDoList);
   useEffect(() => {
     // Check if a user is logged in
     if (!userInfo) {

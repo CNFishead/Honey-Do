@@ -14,6 +14,7 @@ import ProfileScreen from "./screens/ProfileScreen";
 // Components
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import PrivateRoute from "./components/PrivateRoute";
 
 // css styles
 import "./App.css";
@@ -43,7 +44,14 @@ const App = () => {
         <Route path="/profile" element={<ProfileScreen />} />
         <Route path="/login" element={<LoginScreen />} />
         <Route path="/register" element={<RegisterScreen />} />
-        <Route path="/" element={<Home />} />
+        <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <Home />
+            </PrivateRoute>
+          }
+        />
       </Routes>
       <Footer />
     </Router>

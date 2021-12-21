@@ -1,91 +1,91 @@
 import {
-  TODO_CREATE_FAIL,
-  TODO_CREATE_REQUEST,
-  TODO_CREATE_RESET,
-  TODO_CREATE_SUCCESS,
-  TODO_DELETE_FAIL,
-  TODO_DELETE_REQUEST,
-  TODO_DELETE_SUCCESS,
-  TODO_DETAILS_FAIL,
-  TODO_DETAILS_REQUEST,
-  TODO_DETAILS_SUCCESS,
-  TODO_LIST_FAIL,
-  TODO_LIST_REQUEST,
-  TODO_LIST_SUCCESS,
-  TODO_UPDATE_FAIL,
-  TODO_UPDATE_REQUEST,
-  TODO_UPDATE_RESET,
-  TODO_UPDATE_SUCCESS,
+  ADD_TODO,
+  DELETE_TODO,
+  SET_CURRENT,
+  CLEAR_CURRENT,
+  UPDATE_TODO,
+  FILTER_TODOS,
+  CLEAR_FILTER,
+  TODO_ERROR,
+  GET_TODOS,
+  CLEAR_TODOS,
 } from "../constants/todoConstants";
 
-export const todoListReducer = (state = { todoLists: [] }, action) => {
+// eslint-disable-next-line
+export const todoReducer = (state = {}, action) => {
   switch (action.type) {
-    case TODO_LIST_REQUEST:
-      return { loading: true, todoLists: [] };
-    case TODO_LIST_SUCCESS:
+    case ADD_TODO:
       return {
+        //  spread original state, and than add to the todos array,
+        // the previous todos, and then the new todo coming from
+        // the payload (action.payload)
+        ...state,
+        todos: [...state.todos, action.payload],
         loading: false,
-        todos: action.payload.lists,
-        pages: action.payload.pages,
-        page: action.payload.page,
       };
-    case TODO_LIST_FAIL:
-      return { loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
-export const todoDetailsReducer = (state = { todo: {} }, action) => {
-  switch (action.type) {
-    case TODO_DETAILS_REQUEST:
-      return { ...state, loading: true };
-    case TODO_DETAILS_SUCCESS:
-      return { loading: false, todo: action.payload };
-    case TODO_DETAILS_FAIL:
-      return { loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
-
-export const todoDeleteReducer = (state = {}, action) => {
-  switch (action.type) {
-    case TODO_DELETE_REQUEST:
-      return { loading: true };
-    case TODO_DELETE_SUCCESS:
-      return { loading: false, success: true };
-    case TODO_DELETE_FAIL:
-      return { loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
-
-export const todoCreateReducer = (state = {}, action) => {
-  switch (action.type) {
-    case TODO_CREATE_REQUEST:
-      return { loading: true };
-    case TODO_CREATE_SUCCESS:
-      return { loading: false, success: true, todo: action.payload };
-    case TODO_CREATE_FAIL:
-      return { loading: false, error: action.payload };
-    case TODO_CREATE_RESET:
-      return {};
-    default:
-      return state;
-  }
-};
-
-export const todoUpdateReducer = (state = { todo: {} }, action) => {
-  switch (action.type) {
-    case TODO_UPDATE_REQUEST:
-      return { loading: true };
-    case TODO_UPDATE_SUCCESS:
-      return { loading: false, success: true, todo: action.payload };
-    case TODO_UPDATE_FAIL:
-      return { loading: false, error: action.payload };
-    case TODO_UPDATE_RESET:
-      return { todo: {} };
+    case DELETE_TODO:
+      // Return all todos that are not the action.payload (id)
+      return {
+        ...state,
+        todos: state.todos.filter((todo) => todo._id !== action.payload),
+        loading: false,
+      };
+    case CLEAR_TODOS:
+      return {
+        ...state,
+        todos: null,
+        filtered: null,
+        error: null,
+        current: null,
+      };
+    case SET_CURRENT:
+      // Set current contact
+      return {
+        ...state,
+        current: action.payload,
+      };
+    case CLEAR_CURRENT:
+      // Clear current value
+      return {
+        ...state,
+        current: null,
+      };
+    case UPDATE_TODO:
+      return {
+        ...state,
+        // This maps over all the todos, checks for the one that is
+        // the updated contact, changes that todo, returns all others.
+        todos: state.todos.map((todo) =>
+          todo._id === action.payload._id ? action.payload : todo
+        ),
+        loading: false,
+      };
+    case FILTER_TODOS:
+      return {
+        ...state,
+        filtered: state.contacts.filter((todo) => {
+          // will return anything that matches the name or email
+          const regex = new RegExp(`${action.payload}`, "gi");
+          return todo.name.match(regex);
+        }),
+      };
+    case CLEAR_FILTER:
+      // Clear current value
+      return {
+        ...state,
+        filter: null,
+      };
+    case TODO_ERROR:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case GET_TODOS:
+      return {
+        ...state,
+        todos: action.payload,
+        loading: false,
+      };
     default:
       return state;
   }
