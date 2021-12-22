@@ -1,56 +1,92 @@
 import {
-  ADD_TODO,
-  DELETE_TODO,
+  GET_TODOS_REQUEST,
+  GET_TODOS_SUCCESS,
+  GET_TODOS_ERROR,
+  DELETE_TODO_REQUEST,
   SET_CURRENT,
   CLEAR_CURRENT,
-  UPDATE_TODO,
   FILTER_TODOS,
   CLEAR_FILTER,
-  TODO_ERROR,
-  GET_TODOS,
   CLEAR_TODOS,
+  ADD_TODO_REQUEST,
+  ADD_TODO_SUCCESS,
+  ADD_TODO_ERROR,
+  DELETE_TODO_SUCCESS,
+  DELETE_TODO_ERROR,
+  UPDATE_TODO_REQUEST,
 } from "../constants/todoConstants";
 
 // eslint-disable-next-line
-export const todoReducer = (state = {}, action) => {
+export const todoListReducer = (state = { todos: [] }, action) => {
   switch (action.type) {
-    case ADD_TODO:
+    case GET_TODOS_REQUEST:
+      return { loading: true };
+    case GET_TODOS_SUCCESS:
+      return { loading: false, todos: action.payload.todos };
+    case GET_TODOS_ERROR:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const todoCreateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ADD_TODO_REQUEST:
+      return { loading: true };
+    case ADD_TODO_SUCCESS:
       return {
         //  spread original state, and than add to the todos array,
         // the previous todos, and then the new todo coming from
         // the payload (action.payload)
         ...state,
-        todos: [...state.todos, action.payload],
+        todo: action.payload,
         loading: false,
       };
-    case DELETE_TODO:
-      // Return all todos that are not the action.payload (id)
+    case ADD_TODO_ERROR:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+export const todoDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DELETE_TODO_REQUEST:
+      return { loading: true };
+    case DELETE_TODO_SUCCESS:
+      return { loading: false, success: true };
+    case DELETE_TODO_ERROR:
       return {
-        ...state,
-        todos: state.todos.filter((todo) => todo._id !== action.payload),
         loading: false,
+        error: action.payload,
       };
+    default:
+      return state;
+  }
+};
+export const todoSetReducer = (state = {}, action) => {
+  switch (action.type) {
     case CLEAR_TODOS:
       return {
-        ...state,
-        todos: null,
-        filtered: null,
-        error: null,
         current: null,
       };
     case SET_CURRENT:
       // Set current contact
       return {
-        ...state,
         current: action.payload,
       };
     case CLEAR_CURRENT:
       // Clear current value
       return {
-        ...state,
         current: null,
       };
-    case UPDATE_TODO:
+    default:
+      return state;
+  }
+};
+export const todoUpdateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case UPDATE_TODO_REQUEST:
       return {
         ...state,
         // This maps over all the todos, checks for the one that is
@@ -60,6 +96,12 @@ export const todoReducer = (state = {}, action) => {
         ),
         loading: false,
       };
+    default:
+      return state;
+  }
+};
+export const todoFilterReducer = (state = {}, action) => {
+  switch (action.type) {
     case FILTER_TODOS:
       return {
         ...state,
@@ -75,18 +117,5 @@ export const todoReducer = (state = {}, action) => {
         ...state,
         filter: null,
       };
-    case TODO_ERROR:
-      return {
-        ...state,
-        error: action.payload,
-      };
-    case GET_TODOS:
-      return {
-        ...state,
-        todos: action.payload,
-        loading: false,
-      };
-    default:
-      return state;
   }
 };

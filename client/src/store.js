@@ -12,7 +12,12 @@ import {
   userDeleteReducer,
   userUpdateReducer,
 } from "./reducers/userReducer";
-import { todoReducer } from "./reducers/todoReducer";
+import {
+  todoCreateReducer,
+  todoDeleteReducer,
+  todoListReducer,
+  todoSetReducer,
+} from "./reducers/todoReducer";
 
 const middleware = [thunk];
 
@@ -25,26 +30,22 @@ const reducer = combineReducers({
   userList: userListReducer,
   userDelete: userDeleteReducer,
   userUpdate: userUpdateReducer,
-  // Project Reducers
-  honeyDoList: todoReducer,
+  // Todo Reducers
+  todoLists: todoListReducer,
+  todoCreate: todoCreateReducer,
+  todoSet: todoSetReducer,
+  todoDelete: todoDeleteReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))
   : null;
-const todoInfoFromStorage = localStorage.getItem("todoLists")
-  ? JSON.parse(localStorage.getItem("todoLists"))
-  : {
-      todos: [],
-      current: null,
-      filtered: null,
-      error: null,
-      loading: false,
-    };
-
+const todoInfoFromStorage = localStorage.getItem("todos")
+  ? JSON.parse(localStorage.getItem("todos"))
+  : [];
 const initialState = {
   userLogin: { userInfo: userInfoFromStorage },
-  honeyDoList: { todoLists: todoInfoFromStorage },
+  todoLists: { todos: todoInfoFromStorage },
 };
 const store = createStore(
   reducer,

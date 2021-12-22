@@ -7,11 +7,12 @@ import Todo from "../models/Todo.js";
   @Access: Private
 */
 export const getTodoLists = asyncHandler(async (req, res, next) => {
-  const lists = await Todo.find({ user: req.user._id }).sort({
+  const todos = await Todo.find({ user: req.user._id }).sort({
     createdAt: -1,
   });
   res.status(200).json({
-    lists,
+    success: true,
+    todos,
   });
 });
 /*
@@ -63,7 +64,7 @@ export const removeList = asyncHandler(async (req, res, next) => {
   // If list doesnt exist
   if (!list) {
     return res
-      .status(201)
+      .status(400)
       .json({ success: false, message: "No list with that ID" });
   }
 

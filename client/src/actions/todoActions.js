@@ -1,26 +1,46 @@
-import { GET_TODOS, TODO_ERROR } from "../constants/todoConstants";
+import {
+  ADD_TODO_ERROR,
+  ADD_TODO_REQUEST,
+  ADD_TODO_SUCCESS,
+  CLEAR_CURRENT,
+  DELETE_TODO_ERROR,
+  DELETE_TODO_REQUEST,
+  DELETE_TODO_SUCCESS,
+  GET_TODOS_ERROR,
+  GET_TODOS_REQUEST,
+  GET_TODOS_SUCCESS,
+  SET_CURRENT,
+} from "../constants/todoConstants";
 import { logout } from "./userActions";
 import axios from "axios";
 
+// Set Current List
+export const setCurrent = (list) => async (dispatch, getState) => {
+  console.log("setcurrent");
+  dispatch({ type: SET_CURRENT, payload: list });
+};
+
 export const listTodos = () => async (dispatch, getState) => {
   try {
+    dispatch({ type: GET_TODOS_REQUEST });
+    // Pull user information
     const {
       userLogin: { userInfo },
     } = getState();
+    // headers and auth
     const config = {
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
     // axios call
     const { data } = await axios.get(`/api/todo`, config);
-    // on success dispatch request success
+
     // Dispatch request type
-    dispatch({ type: GET_TODOS, payload: data });
+    dispatch({ type: GET_TODOS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
-      type: TODO_ERROR,
+      type: GET_TODOS_ERROR,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
@@ -58,86 +78,91 @@ export const listTodos = () => async (dispatch, getState) => {
 //   }
 // };
 
-// export const deleteTodo = (id) => async (dispatch, getState) => {
-//   try {
-//     dispatch({
-//       type: TODO_DELETE_REQUEST,
-//     });
+export const deleteTodo = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: DELETE_TODO_REQUEST,
+    });
 
-//     const {
-//       userLogin: { userInfo },
-//     } = getState();
+    const {
+      userLogin: { userInfo },
+    } = getState();
 
-//     const config = {
-//       headers: {
-//         Authorization: `Bearer ${userInfo.token}`,
-//       },
-//     };
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
 
-//     await axios.delete(`/api/todo/${id}`, config);
+    await axios.delete(`/api/todo/${id}`, config);
 
-//     dispatch({
-//       type: TODO_DELETE_SUCCESS,
-//     });
-//   } catch (error) {
-//     const message =
-//       error.response && error.response.data.message
-//         ? error.response.data.message
-//         : error.message;
-//     if (message === "Not authorized, token failed") {
-//       dispatch(logout());
-//     }
-//     dispatch({
-//       type: TODO_DELETE_FAIL,
-//       payload: message,
-//     });
-//   }
-// };
+    dispatch({
+      type: DELETE_TODO_SUCCESS,
+    });
+    dispatch({ type: CLEAR_CURRENT });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
+    }
+    dispatch({
+      type: DELETE_TODO_ERROR,
+      payload: message,
+    });
+  }
+};
 
-// export const createTodo =
-//   ({ name }) =>
-//   async (dispatch, getState) => {
-//     try {
-//       dispatch({
-//         type: TODO_CREATE_REQUEST,
-//       });
+export const createTodo =
+  ({ name }) =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: ADD_TODO_REQUEST,
+      });
 
-//       const {
-//         userLogin: { userInfo },
-//       } = getState();
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-//       const config = {
-//         headers: {
-//           Authorization: `Bearer ${userInfo.token}`,
-//         },
-//       };
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
 
-//       const { data } = await axios.post(
-//         `/api/todo`,
-//         {
-//           name,
-//         },
-//         config
-//       );
+      const { data } = await axios.post(
+        `/api/todo`,
+        {
+          name,
+        },
+        config
+      );
 
-//       dispatch({
-//         type: TODO_CREATE_SUCCESS,
-//         payload: data,
-//       });
-//     } catch (error) {
-//       const message =
-//         error.response && error.response.data.message
-//           ? error.response.data.message
-//           : error.message;
-//       if (message === "Not authorized, token failed") {
-//         dispatch(logout());
-//       }
-//       dispatch({
-//         type: TODO_CREATE_FAIL,
-//         payload: message,
-//       });
-//     }
-//   };
+      dispatch({
+        type: ADD_TODO_SUCCESS,
+        payload: data,
+      });
+      dispatch({
+        type: SET_CURRENT,
+        payload: data.list,
+      });
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      if (message === "Not authorized, token failed") {
+        dispatch(logout());
+      }
+      dispatch({
+        type: ADD_TODO_ERROR,
+        payload: message,
+      });
+    }
+  };
 
 // export const updateTodo = (todo) => async (dispatch, getState) => {
 //   try {
