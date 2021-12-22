@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { createTodo, deleteTodo } from "../actions/todoActions";
-
-// Components
-import TodoItem from "./TodoItem";
+import { createTodo, deleteTodo, updateTodo } from "../actions/todoActions";
 
 // Image import
 
@@ -16,15 +13,17 @@ const TodoList = () => {
     name: "",
     todoItems: [],
   });
+  // console.log(list);
   const [input, setInput] = useState("");
 
   // App State
   const { current } = useSelector((state) => state.todoSet);
   const { success: successDelete } = useSelector((state) => state.todoDelete);
+  const { success: successUpdate } = useSelector((state) => state.todoUpdate);
 
   // Hooks
   useEffect(() => {
-    if (current) {
+    if (current || successUpdate) {
       setList(current);
     } else {
       setList({
@@ -32,32 +31,24 @@ const TodoList = () => {
         todoItems: [],
       });
     }
-  }, [dispatch, current, successDelete]);
+  }, [dispatch, current, successDelete, successUpdate]);
 
-  const handleChange = (e) =>
-    setList({ ...list, [e.target.name]: e.target.value });
+  const handleChange = (e) => setInput(e.target.value);
   const deleteListHandler = (id) => {
     if (window.confirm("Are you Sure you wish to delete this list?")) {
       dispatch(deleteTodo(id));
     }
   };
-  // const handleClick = () => {
-  //   setItems((prevValues) => {
-  //     return [...prevValues, input];
-  //   });
-  // };
+  const addListItemHandler = (input) => {
+    list.todoItems.push(input);
+    dispatch(updateTodo(list));
+  };
 
-  // const deleteItem = (id) => {
-  //   // Get an array of previous items
-  //   // use filter, to loop through all pieces of index
-  //   setItems((prevItems) => {
-  //     return prevItems.filter((item, index) => {
-  //       // return all item indexes that dont match the id
-  //       // that was passed to the deleteItem function
-  //       return index !== id;
-  //     });
-  //   });
-  // };
+  const deleteItem = (id) => {
+    const element = list.todoItems.indexOf(id);
+    list.todoItems.splice(element, 1);
+    dispatch(updateTodo(list));
+  };
 
   return (
     <div
@@ -66,16 +57,16 @@ const TodoList = () => {
     >
       {current ? (
         <>
-          <div>
-            <h1>{list.name}</h1>
+          <div style={{ position: "relative", padding: "2%" }}>
+            <h1 style={{ display: "inline" }}>{list.name}</h1>
+            <Button
+              className="todo-container-delete"
+              variant="danger"
+              onClick={() => deleteListHandler(list._id)}
+            >
+              <i className="far fa-trash-alt" />
+            </Button>
           </div>
-          <Button
-            className="todo-container-delete"
-            variant="danger"
-            onClick={() => deleteListHandler(list._id)}
-          >
-            <i className="far fa-trash-alt" />
-          </Button>
 
           <div className="form">
             <input
@@ -85,7 +76,7 @@ const TodoList = () => {
               name="lItem"
               placeholder="Add item here"
             />
-            <button>
+            <button onClick={() => addListItemHandler(input)}>
               <span>Add</span>
             </button>
           </div>
@@ -94,14 +85,16 @@ const TodoList = () => {
               {/* setup map array, for each item, in the array
           make a TodoItem component, pass an index value. */}
               {list.todoItems.map((Item, index) => (
-                // set todoItem that it passes down certain props
-                // important prop, is the function passed down through
-                // onCheck, and the id.
-                <TodoItem
+                <div
+                  // setup anonymous function, that will call
+                  // ONLY when the div
+                  // is clicked on.
                   key={index}
-                  id={index}
-                  text={Item} /*onCheck={deleteItem}*/
-                />
+                  onClick={() => deleteItem(index)}
+                >
+                  {/* list item, gets text from props */}
+                  <li>{Item}</li>
+                </div>
               ))}
             </ul>
           </div>
@@ -117,7 +110,13 @@ const TodoList = () => {
               width: "50%",
               margin: "10%",
             }}
-            onClick={() => dispatch(createTodo({ name: "Honey-Do List" }))}
+            onClick={() =>
+              dispatch(
+                createTodo({
+                  name: prompt("What Would you like to name the list?"),
+                })
+              )
+            }
             variant="success"
           >
             +

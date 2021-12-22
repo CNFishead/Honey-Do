@@ -17,6 +17,7 @@ import {
   todoDeleteReducer,
   todoListReducer,
   todoSetReducer,
+  todoUpdateReducer,
 } from "./reducers/todoReducer";
 
 const middleware = [thunk];
@@ -35,6 +36,7 @@ const reducer = combineReducers({
   todoCreate: todoCreateReducer,
   todoSet: todoSetReducer,
   todoDelete: todoDeleteReducer,
+  todoUpdate: todoUpdateReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

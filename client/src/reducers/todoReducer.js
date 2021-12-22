@@ -14,6 +14,8 @@ import {
   DELETE_TODO_SUCCESS,
   DELETE_TODO_ERROR,
   UPDATE_TODO_REQUEST,
+  UPDATE_TODO_SUCCESS,
+  UPDATE_TODO_ERROR,
 } from "../constants/todoConstants";
 
 // eslint-disable-next-line
@@ -88,13 +90,17 @@ export const todoUpdateReducer = (state = {}, action) => {
   switch (action.type) {
     case UPDATE_TODO_REQUEST:
       return {
-        ...state,
-        // This maps over all the todos, checks for the one that is
-        // the updated contact, changes that todo, returns all others.
-        todos: state.todos.map((todo) =>
-          todo._id === action.payload._id ? action.payload : todo
-        ),
+        loading: true,
+      };
+    case UPDATE_TODO_SUCCESS:
+      return {
         loading: false,
+        todo: action.payload,
+      };
+    case UPDATE_TODO_ERROR:
+      return {
+        loading: false,
+        error: action.payload,
       };
     default:
       return state;

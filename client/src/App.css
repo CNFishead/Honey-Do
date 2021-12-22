@@ -79,8 +79,7 @@ body {
 }
 .todo-container-delete {
   position: absolute;
-  top: 5%;
-  right: 5%;
+  right: 0;
 }
 
 /* ----------------------------------------Form Css, this also affects the Todo list ---------------------------------------- */

@@ -10,6 +10,9 @@ import {
   GET_TODOS_REQUEST,
   GET_TODOS_SUCCESS,
   SET_CURRENT,
+  UPDATE_TODO_ERROR,
+  UPDATE_TODO_REQUEST,
+  UPDATE_TODO_SUCCESS,
 } from "../constants/todoConstants";
 import { logout } from "./userActions";
 import axios from "axios";
@@ -164,41 +167,40 @@ export const createTodo =
     }
   };
 
-// export const updateTodo = (todo) => async (dispatch, getState) => {
-//   try {
-//     dispatch({
-//       type: TODO_UPDATE_REQUEST,
-//     });
+export const updateTodo = (todo) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: UPDATE_TODO_REQUEST,
+    });
 
-//     const {
-//       userLogin: { userInfo },
-//     } = getState();
+    const {
+      userLogin: { userInfo },
+    } = getState();
 
-//     const config = {
-//       headers: {
-//         "Content-Type": "application/json",
-//         Authorization: `Bearer ${userInfo.token}`,
-//       },
-//     };
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
 
-//     const { data } = await axios.put(`/api/todo/${todo._id}`, todo, config);
+    const { data } = await axios.put(`/api/todo/${todo._id}`, todo, config);
 
-//     dispatch({
-//       type: TODO_UPDATE_SUCCESS,
-//       payload: data,
-//     });
-//     dispatch({ type: TODO_DETAILS_SUCCESS, payload: data });
-//   } catch (error) {
-//     const message =
-//       error.response && error.response.data.message
-//         ? error.response.data.message
-//         : error.message;
-//     if (message === "Not authorized, token failed") {
-//       dispatch(logout());
-//     }
-//     dispatch({
-//       type: TODO_UPDATE_FAIL,
-//       payload: message,
-//     });
-//   }
-// };
+    dispatch({
+      type: UPDATE_TODO_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
+    }
+    dispatch({
+      type: UPDATE_TODO_ERROR,
+      payload: message,
+    });
+  }
+};

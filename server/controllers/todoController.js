@@ -43,7 +43,7 @@ export const addListItem = asyncHandler(async (req, res, next) => {
   // If list doesnt exist
   if (!list) {
     return res
-      .status(201)
+      .status(400)
       .json({ success: false, message: "No list with that ID" });
   }
 

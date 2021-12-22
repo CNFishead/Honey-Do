@@ -7,7 +7,7 @@ const TodoSchema = new mongoose.Schema(
       required: true,
     },
     todoItems: {
-      type: [String],
+      type: [Object],
     },
     // Create a relationship between Todo Lists and User
     user: {

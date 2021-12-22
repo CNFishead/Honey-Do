@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ReactGA from "react-ga";
 
 // Screen imports
 import Home from "./screens/Home";
@@ -15,46 +16,58 @@ import ProfileScreen from "./screens/ProfileScreen";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import PrivateRoute from "./components/PrivateRoute";
+import RouteChangetracker from "./components/RouteChangetracker";
 
 // css styles
 import "./App.css";
 
 const App = () => {
+  // Google analytic stuff
+  ReactGA.initialize("G-2M2LPNFQ1W", {
+    debug: true,
+    titleCase: false,
+    gaOptions: {
+      userId: 123,
+    },
+  });
   return (
-    <Router>
-      <Header />
-      <Routes>
-        <Route path="/resetpassword" element={<Reset />} />
-        <Route
-          path="/auth/resetpassword/:resettoken"
-          element={<ResetPassword />}
-        />
-        <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
-        <Route
-          path="/admin/userlist/:pageNumber"
-          element={<UserListScreen />}
-          exact
-        />
-        <Route path="/admin/userlist" element={<UserListScreen />} exact />
-        <Route
-          path="/admin/userlist/search/:keyword/page/:pageNumber"
-          element={<UserListScreen />}
-          exact
-        />
-        <Route path="/profile" element={<ProfileScreen />} />
-        <Route path="/login" element={<LoginScreen />} />
-        <Route path="/register" element={<RegisterScreen />} />
-        <Route
-          path="/"
-          element={
-            <PrivateRoute>
-              <Home />
-            </PrivateRoute>
-          }
-        />
-      </Routes>
-      <Footer />
-    </Router>
+    <>
+      {/* RouteChangetracker tracks the pages as the customer moves about the page. */}
+      <Router>
+        <Header />
+        <Routes>
+          <Route path="/resetpassword" element={<Reset />} />
+          <Route
+            path="/auth/resetpassword/:resettoken"
+            element={<ResetPassword />}
+          />
+          <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
+          <Route
+            path="/admin/userlist/:pageNumber"
+            element={<UserListScreen />}
+            exact
+          />
+          <Route path="/admin/userlist" element={<UserListScreen />} exact />
+          <Route
+            path="/admin/userlist/search/:keyword/page/:pageNumber"
+            element={<UserListScreen />}
+            exact
+          />
+          <Route path="/profile" element={<ProfileScreen />} />
+          <Route path="/login" element={<LoginScreen />} />
+          <Route path="/register" element={<RegisterScreen />} />
+          <Route
+            path="/"
+            element={
+              <PrivateRoute>
+                <Home />
+              </PrivateRoute>
+            }
+          />
+        </Routes>
+        <Footer />
+      </Router>
+    </>
   );
 };
 
