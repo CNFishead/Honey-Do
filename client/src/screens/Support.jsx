@@ -46,7 +46,7 @@ const Support = () => {
       setError(!error);
       setMessage({
         variant: "danger",
-        message: `Something went wrong \n ${e.message}`,
+        text: `Something went wrong \n ${e}`,
       });
     }
   };
