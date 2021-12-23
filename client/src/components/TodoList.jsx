@@ -33,6 +33,20 @@ const TodoList = () => {
     }
   }, [dispatch, current, successDelete, successUpdate]);
 
+  // component handlers
+  const addNewListHandler = () => {
+    const listName = prompt("What Would you like to name the list?");
+    if (listName !== "") {
+      dispatch(
+        createTodo({
+          name: listName,
+        })
+      );
+    } else {
+      alert("You must give a name to your new list");
+    }
+  };
+
   const handleChange = (e) => setInput(e.target.value);
   const deleteListHandler = (id) => {
     if (window.confirm("Are you Sure you wish to delete this list?")) {
@@ -110,13 +124,7 @@ const TodoList = () => {
               width: "50%",
               margin: "10%",
             }}
-            onClick={() =>
-              dispatch(
-                createTodo({
-                  name: prompt("What Would you like to name the list?"),
-                })
-              )
-            }
+            onClick={addNewListHandler}
             variant="success"
           >
             +

@@ -11,12 +11,12 @@ import RegisterScreen from "./screens/RegisterScreen";
 import UserEditScreen from "./screens/UserEditScreen";
 import UserListScreen from "./screens/UserListScreen";
 import ProfileScreen from "./screens/ProfileScreen";
+import Support from "./screens/Support";
 
 // Components
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import PrivateRoute from "./components/PrivateRoute";
-import RouteChangetracker from "./components/RouteChangetracker";
 
 // css styles
 import "./App.css";
@@ -37,11 +37,29 @@ const App = () => {
         <Header />
         <Routes>
           <Route path="/resetpassword" element={<Reset />} />
+          <Route path="/support" element={<Support />} />
           <Route
             path="/auth/resetpassword/:resettoken"
             element={<ResetPassword />}
           />
-          <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
+          <Route
+            path="/admin/user/:id/edit"
+            element={
+              <PrivateRoute>
+                <UserEditScreen />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <ProfileScreen />
+              </PrivateRoute>
+            }
+          />
+          <Route path="/login" element={<LoginScreen />} />
+          <Route path="/register" element={<RegisterScreen />} />
           <Route
             path="/admin/userlist/:pageNumber"
             element={<UserListScreen />}
@@ -53,9 +71,6 @@ const App = () => {
             element={<UserListScreen />}
             exact
           />
-          <Route path="/profile" element={<ProfileScreen />} />
-          <Route path="/login" element={<LoginScreen />} />
-          <Route path="/register" element={<RegisterScreen />} />
           <Route
             path="/"
             element={
@@ -63,6 +78,7 @@ const App = () => {
                 <Home />
               </PrivateRoute>
             }
+            exact
           />
         </Routes>
         <Footer />

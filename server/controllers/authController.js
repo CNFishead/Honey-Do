@@ -124,7 +124,12 @@ const updateDetails = asyncHandler(async (req, res, nex) => {
 const forgotPassword = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
-    return next(new ErrorResponse(`There is no user with that Email`, 404));
+    return res
+      .status(404)
+      .json({
+        success: false,
+        message: `There is no user with email: ${req.body.email}`,
+      });
   }
   // Get reset token
   const resetToken = await user.getResetPasswordToken();

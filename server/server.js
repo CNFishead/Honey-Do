@@ -10,6 +10,7 @@ import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import todoRoutes from "./routes/todoRoutes.js";
+import supportRoutes from "./routes/supportRoutes.js";
 
 // import middleware
 import errorHandler from "./middleware/error.js";
@@ -48,6 +49,7 @@ app.use(cors());
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/todo", todoRoutes);
+app.use("/api/support", supportRoutes);
 
 // Set static folder
 const __dirname = path.resolve();

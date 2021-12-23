@@ -6,6 +6,7 @@ import axios from "axios";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
+import Meta from "../components/Meta";
 
 const Reset = () => {
   const [email, setEmail] = useState("");
@@ -34,6 +35,7 @@ const Reset = () => {
   };
   return (
     <Container>
+      <Meta title={`Honey Do | Password Reset`} />
       <FormContainer>
         {error && <Message variant="danger">{message}</Message>}
         <h1>Reset Account Password</h1>

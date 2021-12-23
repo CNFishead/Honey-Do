@@ -123,5 +123,7 @@ export const todoFilterReducer = (state = {}, action) => {
         ...state,
         filter: null,
       };
+    default:
+      return state;
   }
 };

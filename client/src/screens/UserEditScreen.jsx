@@ -16,6 +16,7 @@ import {
   USER_UPDATE_FAIL,
   USER_UPDATE_RESET,
 } from "../constants/userConstants";
+import Meta from "../components/Meta";
 
 const UserEditScreen = () => {
   // params/navigate;
@@ -36,9 +37,6 @@ const UserEditScreen = () => {
       password2: confirmPassword,
     });
 
-  console.log(
-    `length: ${validLength}, number: ${hasNumber}, upperCase: ${upperCase}, lowerCase: ${lowerCase}, match: ${match}, specialChar: ${specialChar}`
-  );
   // App state
   const { loading, error, user } = useSelector((state) => state.userDetails);
   const {
@@ -92,6 +90,7 @@ const UserEditScreen = () => {
 
   return (
     <>
+      <Meta title={`Admin | Edit: ${firstName}`} />
       <FormContainer>
         <Link
           to="/admin/userlist"

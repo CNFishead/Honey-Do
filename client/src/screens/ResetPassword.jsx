@@ -10,6 +10,7 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
 import { USER_LOGIN_SUCCESS } from "../constants/userConstants";
+import Meta from "../components/Meta";
 
 const ResetPassword = () => {
   // get param token
@@ -59,6 +60,7 @@ const ResetPassword = () => {
   };
   return (
     <Container>
+      <Meta title={`Honey Do | New Password`} />
       <FormContainer>
         {error && <Message variant="danger">{message}</Message>}
         <h1 style={{ color: "white" }}>Enter New Password</h1>

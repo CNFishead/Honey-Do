@@ -11,9 +11,15 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { deleteUser, inactive, listUsers } from "../actions/userActions";
+import {
+  activate,
+  deleteUser,
+  inactive,
+  listUsers,
+} from "../actions/userActions";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
+import Meta from "../components/Meta";
 
 const UserListScreen = () => {
   // pulls the pageNumber and Keyword search params
@@ -66,9 +72,15 @@ const UserListScreen = () => {
       dispatch(inactive(id));
     }
   };
+  const activeHandler = (id) => {
+    if (window.confirm(`Are you sure youd like to re-activate this user?`)) {
+      dispatch(activate(id));
+    }
+  };
 
   return (
     <>
+      <Meta title={`Admin | Users`} />
       <Container style={{ fontFamily: "sans-serif" }}>
         <h1>Users</h1>
         <Form onSubmit={submitHandler} inline style={{ padding: "2%" }}>
@@ -146,7 +158,7 @@ const UserListScreen = () => {
                       </Button>
                     ) : (
                       <Button
-                        onClick={() => inactiveHandler(user._id)}
+                        onClick={() => activeHandler(user._id)}
                         variant="light"
                         className="btn-sm"
                         disabled={userInfo._id === user._id}

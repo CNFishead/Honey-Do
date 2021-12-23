@@ -14,6 +14,7 @@ import {
   updateUserProfile,
 } from "../actions/userActions";
 import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants";
+import Meta from "../components/Meta";
 
 const ProfileScreen = () => {
   // hooks
@@ -90,6 +91,7 @@ const ProfileScreen = () => {
 
   return (
     <Row>
+      <Meta title={`Honey Do | Profile`} />
       {message && <Message variant="danger">{message}</Message>}
       {error && <Message variant="danger">{error}</Message>}
       {success && <Message variant="success">Profile Updated</Message>}

@@ -1,22 +1,11 @@
 import React, { useEffect } from "react";
-import {
-  Button,
-  Col,
-  Container,
-  Navbar,
-  Offcanvas,
-  Row,
-} from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 // Components
 import TodoList from "../components/TodoList";
-import Loader from "../components/Loader";
-import Meta from "../components/Meta";
 
-// actions/constants
-import { createTodo, listTodos } from "../actions/todoActions";
-import { SET_CURRENT } from "../constants/todoConstants";
+import Meta from "../components/Meta";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -30,7 +19,7 @@ const Home = () => {
       navigate("/login");
       // Get Users lists
     }
-  }, [dispatch, navigate]);
+  }, [dispatch, navigate, userInfo]);
 
   return (
     <Container>

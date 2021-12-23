@@ -6,6 +6,7 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { login } from "../actions/userActions";
 import FormContainer from "../components/FormContainer";
+import Meta from "../components/Meta";
 
 const LoginScreen = ({ location }) => {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ const LoginScreen = ({ location }) => {
 
   return (
     <Container>
+      <Meta title={`Honey Do | Login`} />
       <FormContainer>
         <h1>Login</h1>
         {error && <Message variant="danger">{error}</Message>}

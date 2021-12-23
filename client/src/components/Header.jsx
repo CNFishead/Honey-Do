@@ -31,7 +31,7 @@ const Header = () => {
   useEffect(() => {
     // Check if a user is logged in
     if (!userInfo) {
-      navigate("/login");
+      // navigate("/login");
       // Get Users lists
     } else {
       dispatch(listTodos());
@@ -129,13 +129,15 @@ const Header = () => {
             >
               <>
                 <div style={{ padding: "2%", textAlign: "center" }}>
-                  <Button
-                    variant="success"
-                    style={{ fontFamily: "serif", width: "50%" }}
-                    onClick={createListHandler}
-                  >
-                    Create new List
-                  </Button>
+                  {userInfo && (
+                    <Button
+                      variant="success"
+                      style={{ fontFamily: "serif", width: "50%" }}
+                      onClick={createListHandler}
+                    >
+                      Create new List
+                    </Button>
+                  )}
                 </div>
                 {todos && !loading ? (
                   todos.map((todolist) => {
