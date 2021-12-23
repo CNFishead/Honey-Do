@@ -20,6 +20,6 @@ export const sendSupportMail = asyncHandler(async (req, res) => {
     });
     res.status(200).json({ success: true });
   } catch (error) {
-    res.status(400).json({ success: false, message: error });
+    res.status(400).json({ success: false, error });
   }
 });
