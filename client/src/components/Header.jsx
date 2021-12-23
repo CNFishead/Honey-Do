@@ -40,7 +40,16 @@ const Header = () => {
 
   // Handlers
   const createListHandler = () => {
-    dispatch(createTodo({ name: "New Todo List" }));
+    const listName = prompt("What Would you like to name the list?");
+    if (listName !== "") {
+      dispatch(
+        createTodo({
+          name: listName,
+        })
+      );
+    } else {
+      alert("You must give a name to your new list");
+    }
   };
   const setCur = (list) => {
     dispatch({ type: SET_CURRENT, payload: list });
