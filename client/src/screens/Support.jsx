@@ -41,6 +41,12 @@ const Support = () => {
         variant: "success",
         text: "Message was received successfully, you should hear from us soon",
       });
+      setSupport({
+        name: "",
+        email: "",
+        phone: "",
+        message: "",
+      });
     } catch (e) {
       console.log(e);
       setLoading(false);
@@ -115,6 +121,9 @@ const Support = () => {
                   as="textarea"
                   placeholder="Problem"
                   style={{ height: "100px" }}
+                  name="message"
+                  value={support.message}
+                  onChange={handleChange}
                 />
               </FloatingLabel>
               <Button
