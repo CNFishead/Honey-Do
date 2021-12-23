@@ -181,25 +181,29 @@ const RegisterScreen = () => {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
                 ></Form.Control>
-                {match ? (
-                  <Form.Text>
-                    <span
-                      className="valid"
-                      style={{ fontFamily: "sans-serif", fontSize: ".8rem" }}
-                    >
-                      <i className="fas fa-check" /> Looks Good
-                    </span>
-                  </Form.Text>
+                {password !== "" ? (
+                  match ? (
+                    <Form.Text>
+                      <span
+                        className="valid"
+                        style={{ fontFamily: "sans-serif", fontSize: ".8rem" }}
+                      >
+                        <i className="fas fa-check" /> Looks Good
+                      </span>
+                    </Form.Text>
+                  ) : (
+                    <Form.Text>
+                      <span
+                        className="invalid"
+                        style={{ fontFamily: "sans-serif", fontSize: ".8rem" }}
+                      >
+                        <i className="fas fa-exclamation-circle" /> Passwords
+                        must Match
+                      </span>
+                    </Form.Text>
+                  )
                 ) : (
-                  <Form.Text>
-                    <span
-                      className="invalid"
-                      style={{ fontFamily: "sans-serif", fontSize: ".8rem" }}
-                    >
-                      <i className="fas fa-exclamation-circle" /> Passwords must
-                      Match
-                    </span>
-                  </Form.Text>
+                  <div></div>
                 )}
               </Form.Group>
 

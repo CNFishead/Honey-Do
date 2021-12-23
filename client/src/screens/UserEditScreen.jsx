@@ -147,7 +147,54 @@ const UserEditScreen = () => {
                 placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
               ></Form.Control>
+              {password ? (
+                <Form.Text
+                  style={{
+                    fontFamily: "serif",
+                    fontSize: ".9rem",
+                  }}
+                >
+                  Password must be{" "}
+                  <span
+                    className={validLength ? `valid` : `invalid`}
+                    style={{ fontWeight: "bold" }}
+                  >
+                    6 characters long
+                  </span>
+                  , have atleast{" "}
+                  <span
+                    className={specialChar ? `valid` : `invalid`}
+                    style={{ fontWeight: "bold" }}
+                  >
+                    1 special character
+                  </span>
+                  ,{" "}
+                  <span
+                    className={upperCase ? `valid` : `invalid`}
+                    style={{ fontWeight: "bold" }}
+                  >
+                    Upper
+                  </span>{" "}
+                  and{" "}
+                  <span
+                    className={lowerCase ? `valid` : `invalid`}
+                    style={{ fontWeight: "bold" }}
+                  >
+                    lower
+                  </span>{" "}
+                  case,{" "}
+                  <span
+                    className={hasNumber ? `valid` : `invalid`}
+                    style={{ fontWeight: "bold" }}
+                  >
+                    include numbers
+                  </span>
+                </Form.Text>
+              ) : (
+                <div></div>
+              )}
             </Form.Group>
 
             <Form.Group controlId="confirmPassword">
@@ -157,7 +204,32 @@ const UserEditScreen = () => {
                 placeholder="Confirm password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                required
               ></Form.Control>
+              {password !== "" ? (
+                match ? (
+                  <Form.Text>
+                    <span
+                      className="valid"
+                      style={{ fontFamily: "sans-serif", fontSize: ".8rem" }}
+                    >
+                      <i className="fas fa-check" /> Looks Good
+                    </span>
+                  </Form.Text>
+                ) : (
+                  <Form.Text>
+                    <span
+                      className="invalid"
+                      style={{ fontFamily: "sans-serif", fontSize: ".8rem" }}
+                    >
+                      <i className="fas fa-exclamation-circle" /> Passwords must
+                      Match
+                    </span>
+                  </Form.Text>
+                )
+              ) : (
+                <div></div>
+              )}
             </Form.Group>
             <Container style={{ padding: "2%" }}>
               <Form.Group controlId="isadmin">
