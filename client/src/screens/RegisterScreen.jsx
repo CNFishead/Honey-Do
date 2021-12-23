@@ -63,157 +63,162 @@ const RegisterScreen = () => {
         <h1>Sign Up</h1>
         {message && <Message variant="danger">{message}</Message>}
         {error && <Message variant="danger">{error}</Message>}
-        {loading && <Loader />}
-        <Form
-          onSubmit={submitHandler}
-          className="form form-container"
-          style={{ fontSize: "1.5em" }}
-        >
-          <Form.Group controlId="name">
-            <Form.Label>First Name</Form.Label>
-            <Form.Control
-              type="name"
-              placeholder="Enter First Name"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              required
-            ></Form.Control>
-          </Form.Group>
-          <Form.Group controlId="firstName">
-            <Form.Label>Last Name</Form.Label>
-            <Form.Control
-              type="name"
-              placeholder="Enter Last Name"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
-          <FloatingLabel controlId="gender" label="Gender">
-            <Form.Select
-              aria-label="select gender"
-              onChange={(e) => {
-                setGender(e.target.value);
-              }}
-              value={gender}
+        {loading ? (
+          <Loader />
+        ) : (
+          <>
+            <Form
+              onSubmit={submitHandler}
+              className="form form-container"
+              style={{ fontSize: "1.5em" }}
             >
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </Form.Select>
-          </FloatingLabel>
-          <Form.Group controlId="email">
-            <Form.Label>Email Address</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Enter email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            ></Form.Control>
-          </Form.Group>
+              <Form.Group controlId="name">
+                <Form.Label>First Name</Form.Label>
+                <Form.Control
+                  type="name"
+                  placeholder="Enter First Name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  required
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group controlId="firstName">
+                <Form.Label>Last Name</Form.Label>
+                <Form.Control
+                  type="name"
+                  placeholder="Enter Last Name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+              <FloatingLabel controlId="gender" label="Gender">
+                <Form.Select
+                  aria-label="select gender"
+                  onChange={(e) => {
+                    setGender(e.target.value);
+                  }}
+                  value={gender}
+                >
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </Form.Select>
+              </FloatingLabel>
+              <Form.Group controlId="email">
+                <Form.Label>Email Address</Form.Label>
+                <Form.Control
+                  type="email"
+                  placeholder="Enter email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                ></Form.Control>
+              </Form.Group>
 
-          <Form.Group controlId="password">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Enter password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            ></Form.Control>
-            {password ? (
-              <Form.Text
-                style={{
-                  fontFamily: "serif",
-                  fontSize: ".9rem",
-                }}
+              <Form.Group controlId="password">
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Enter password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                ></Form.Control>
+                {password ? (
+                  <Form.Text
+                    style={{
+                      fontFamily: "serif",
+                      fontSize: ".9rem",
+                    }}
+                  >
+                    Password must be{" "}
+                    <span
+                      className={validLength ? `valid` : `invalid`}
+                      style={{ fontWeight: "bold" }}
+                    >
+                      6 characters long
+                    </span>
+                    , have atleast{" "}
+                    <span
+                      className={specialChar ? `valid` : `invalid`}
+                      style={{ fontWeight: "bold" }}
+                    >
+                      1 special character
+                    </span>
+                    ,{" "}
+                    <span
+                      className={upperCase ? `valid` : `invalid`}
+                      style={{ fontWeight: "bold" }}
+                    >
+                      Upper
+                    </span>{" "}
+                    and{" "}
+                    <span
+                      className={lowerCase ? `valid` : `invalid`}
+                      style={{ fontWeight: "bold" }}
+                    >
+                      lower
+                    </span>{" "}
+                    case,{" "}
+                    <span
+                      className={hasNumber ? `valid` : `invalid`}
+                      style={{ fontWeight: "bold" }}
+                    >
+                      include numbers
+                    </span>
+                  </Form.Text>
+                ) : (
+                  <div></div>
+                )}
+              </Form.Group>
+
+              <Form.Group controlId="confirmPassword">
+                <Form.Label>Confirm Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Confirm password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                ></Form.Control>
+                {match ? (
+                  <Form.Text>
+                    <span
+                      className="valid"
+                      style={{ fontFamily: "sans-serif", fontSize: ".8rem" }}
+                    >
+                      <i className="fas fa-check" /> Looks Good
+                    </span>
+                  </Form.Text>
+                ) : (
+                  <Form.Text>
+                    <span
+                      className="invalid"
+                      style={{ fontFamily: "sans-serif", fontSize: ".8rem" }}
+                    >
+                      <i className="fas fa-exclamation-circle" /> Passwords must
+                      Match
+                    </span>
+                  </Form.Text>
+                )}
+              </Form.Group>
+
+              <Button
+                type="submit"
+                variant="success"
+                style={{ width: "100%", fontSize: "1.25em" }}
               >
-                Password must be{" "}
-                <span
-                  className={validLength ? `valid` : `invalid`}
-                  style={{ fontWeight: "bold" }}
-                >
-                  6 characters long
-                </span>
-                , have atleast{" "}
-                <span
-                  className={specialChar ? `valid` : `invalid`}
-                  style={{ fontWeight: "bold" }}
-                >
-                  1 special character
-                </span>
-                ,{" "}
-                <span
-                  className={upperCase ? `valid` : `invalid`}
-                  style={{ fontWeight: "bold" }}
-                >
-                  Upper
-                </span>{" "}
-                and{" "}
-                <span
-                  className={lowerCase ? `valid` : `invalid`}
-                  style={{ fontWeight: "bold" }}
-                >
-                  lower
-                </span>{" "}
-                case,{" "}
-                <span
-                  className={hasNumber ? `valid` : `invalid`}
-                  style={{ fontWeight: "bold" }}
-                >
-                  include numbers
-                </span>
-              </Form.Text>
-            ) : (
-              <div></div>
-            )}
-          </Form.Group>
+                Register
+              </Button>
+            </Form>
 
-          <Form.Group controlId="confirmPassword">
-            <Form.Label>Confirm Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Confirm password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            ></Form.Control>
-            {match ? (
-              <Form.Text>
-                <span
-                  className="valid"
-                  style={{ fontFamily: "sans-serif", fontSize: ".8rem" }}
-                >
-                  <i className="fas fa-check" /> Looks Good
-                </span>
-              </Form.Text>
-            ) : (
-              <Form.Text>
-                <span
-                  className="invalid"
-                  style={{ fontFamily: "sans-serif", fontSize: ".8rem" }}
-                >
-                  <i className="fas fa-exclamation-circle" /> Passwords must
-                  Match
-                </span>
-              </Form.Text>
-            )}
-          </Form.Group>
-
-          <Button
-            type="submit"
-            variant="success"
-            style={{ width: "100%", fontSize: "1.25em" }}
-          >
-            Register
-          </Button>
-        </Form>
-
-        <Row className="py-3" style={{ fontSize: "1.5em" }}>
-          <Col>
-            Have an Account? <Link to="/login">Login</Link>
-          </Col>
-        </Row>
+            <Row className="py-3" style={{ fontSize: "1.5em" }}>
+              <Col>
+                Have an Account? <Link to="/login">Login</Link>
+              </Col>
+            </Row>
+          </>
+        )}
       </FormContainer>
     </>
   );
