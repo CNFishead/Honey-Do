@@ -11,6 +11,16 @@ import crypto from "crypto";
   @access Public
 */
 const register = asyncHandler(async (req, res, next) => {
+  // Check if user exists in the database
+  const userExists = await User.findOne({ email: req.body.email });
+  if (userExists) {
+    return res
+      .status(400)
+      .json({
+        success: false,
+        message: `A user with email: ${req.body.email} already exists in our system`,
+      });
+  }
   // create user
   const user = await User.create(req.body);
   if (user) {
@@ -124,12 +134,10 @@ const updateDetails = asyncHandler(async (req, res, nex) => {
 const forgotPassword = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
-    return res
-      .status(404)
-      .json({
-        success: false,
-        message: `There is no user with email: ${req.body.email}`,
-      });
+    return res.status(404).json({
+      success: false,
+      message: `There is no user with email: ${req.body.email}`,
+    });
   }
   // Get reset token
   const resetToken = await user.getResetPasswordToken();
