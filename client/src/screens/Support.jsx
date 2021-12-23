@@ -43,6 +43,7 @@ const Support = () => {
       });
     } catch (e) {
       console.log(e);
+      setLoading(false);
       setError(!error);
       setMessage({
         variant: "danger",
