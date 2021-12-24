@@ -56,6 +56,7 @@ const TodoList = () => {
   const addListItemHandler = (input) => {
     list.todoItems.push(input);
     dispatch(updateTodo(list));
+    setInput("");
   };
 
   const deleteItem = (id) => {
