@@ -21,8 +21,8 @@ router.route("/").get(protect, authorize, getUsers);
 router
   .route("/:id")
   .get(protect, authorize, getUser)
-  .put(updateUser)
-  .delete(deleteUser);
+  .put(protect, authorize, updateUser)
+  .delete(protect, authorize, deleteUser);
 router.route("/:id/delete").put(removeAccount);
-router.route("/:id/activate").put(activateAccount);
+router.route("/:id/activate").put(protect, authorize, activateAccount);
 export default router;
