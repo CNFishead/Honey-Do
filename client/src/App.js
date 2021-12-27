@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // Screen imports
@@ -19,60 +19,58 @@ import PrivateRoute from "./components/PrivateRoute";
 
 // css styles
 import "./App.css";
+import { Container, Row } from "react-bootstrap";
 
 const App = () => {
   return (
     <>
       {/* RouteChangetracker tracks the pages as the customer moves about the page. */}
       <Router>
-        <Header />
-        <Routes>
-          <Route path="/resetpassword" element={<Reset />} />
-          <Route path="/support" element={<Support />} />
-          <Route
-            path="/auth/resetpassword/:resettoken"
-            element={<ResetPassword />}
-          />
-          <Route
-            path="/admin/user/:id/edit"
-            element={
-              <PrivateRoute>
-                <UserEditScreen />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <PrivateRoute>
-                <ProfileScreen />
-              </PrivateRoute>
-            }
-          />
-          <Route path="/login" element={<LoginScreen />} />
-          <Route path="/register" element={<RegisterScreen />} />
-          <Route
-            path="/admin/userlist/:pageNumber"
-            element={<UserListScreen />}
-            exact
-          />
-          <Route path="/admin/userlist" element={<UserListScreen />} exact />
-          <Route
-            path="/admin/userlist/search/:keyword/page/:pageNumber"
-            element={<UserListScreen />}
-            exact
-          />
-          <Route
-            path="/"
-            element={
-              <PrivateRoute>
-                <Home />
-              </PrivateRoute>
-            }
-            exact
-          />
-        </Routes>
-        <Footer />
+        <Container
+          fluid
+          style={{ height: "100%", widht: "100vw", position: "absolute" }}
+        >
+          <Header />
+          <Routes>
+            <Route path="/resetpassword" element={<Reset />} />
+            <Route path="/support" element={<Support />} />
+            <Route
+              path="/auth/resetpassword/:resettoken"
+              element={<ResetPassword />}
+            />
+            <Route
+              path="/admin/user/:id/edit"
+              element={
+                <PrivateRoute>
+                  <UserEditScreen />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <PrivateRoute>
+                  <ProfileScreen />
+                </PrivateRoute>
+              }
+            />
+            <Route path="/login" element={<LoginScreen />} />
+            <Route path="/register" element={<RegisterScreen />} />
+            <Route
+              path="/admin/userlist/:pageNumber"
+              element={<UserListScreen />}
+              exact
+            />
+            <Route path="/admin/userlist" element={<UserListScreen />} exact />
+            <Route
+              path="/admin/userlist/search/:keyword/page/:pageNumber"
+              element={<UserListScreen />}
+              exact
+            />
+            <Route path="/" element={<Home />} exact />
+          </Routes>
+          <Footer />
+        </Container>
       </Router>
     </>
   );
