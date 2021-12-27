@@ -68,7 +68,7 @@ export const logout = () => (dispatch) => {
   dispatch({ type: USER_LOGOUT });
   dispatch({ type: USER_DETAILS_RESET });
   dispatch({ type: USER_LIST_RESET });
-  document.location.href = "/login";
+  document.location.href = "/";
 };
 
 export const register = (user) => async (dispatch) => {
