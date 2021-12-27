@@ -11,11 +11,10 @@ const Footer = () => {
   return (
     <footer
       style={{
-        position: "static",
-        bottom: "0",
         textAlign: "center",
         width: "100%",
-        marginTop: "10%",
+        padding: "5%",
+        bottom: "0",
       }}
     >
       <Container>
