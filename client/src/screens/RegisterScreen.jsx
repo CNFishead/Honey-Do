@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
-import { Form, Button, Row, Col, FloatingLabel } from "react-bootstrap";
+import { Form, Button, Row, Col, FloatingLabel, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { usePasswordValidation } from "../hooks/usePasswordValidation";
 // Components
@@ -11,6 +11,8 @@ import FormContainer from "../components/FormContainer";
 // Actions
 import { register } from "../actions/userActions";
 import Meta from "../components/Meta";
+import axios from "axios";
+import GoogleAuth from "../components/GoogleAuth";
 
 const RegisterScreen = () => {
   const navigate = useNavigate();
@@ -54,6 +56,11 @@ const RegisterScreen = () => {
       let user = { firstName, lastName, email, password, gender };
       dispatch(register(user));
     }
+  };
+
+  const googleAuthHandler = async () => {
+    const data = await axios.get("http://localhost:5000/api/auth/google");
+    console.log(data);
   };
 
   return (
@@ -214,6 +221,8 @@ const RegisterScreen = () => {
               >
                 Register
               </Button>
+
+              <GoogleAuth />
             </Form>
 
             <Row className="py-3" style={{ fontSize: "1.5em" }}>

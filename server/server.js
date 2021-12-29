@@ -5,6 +5,8 @@ import morgan from "morgan";
 import connectDB from "./config/db.js";
 import path from "path";
 import cors from "cors";
+import passport from "passport";
+import GoogleStrategy from "passport-google-oauth20";
 
 // import routes
 import authRoutes from "./routes/authRoutes.js";
@@ -28,6 +30,23 @@ connectDB();
 const app = express();
 // Body Parser, allows to accept body data
 app.use(express.json());
+app.use(passport.initialize());
+
+passport.use(
+  new GoogleStrategy.Strategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: "/api/auth/google",
+      // userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
+    },
+    function (accessToken, refreshToken, profile, cb) {
+      User.findOrCreate({ googleId: profile.id }, function (err, user) {
+        return cb(err, user);
+      });
+    }
+  )
+);
 
 // Dev logging middleware
 if (process.env.NODE_ENV === "development") {
