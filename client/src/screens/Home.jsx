@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
-import { Button, Col, Container, Row, Stack } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import { Col, Container, Row, Stack } from "react-bootstrap";
+import { useSelector } from "react-redux";
+
 // Components
 import TodoList from "../components/TodoList";
 
@@ -9,12 +9,7 @@ import Meta from "../components/Meta";
 import { Link } from "react-router-dom";
 
 const Home = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
   const { userInfo } = useSelector((state) => state.userLogin);
-
-  useEffect(() => {}, []);
 
   return (
     <>

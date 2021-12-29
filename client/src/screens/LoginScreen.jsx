@@ -79,7 +79,7 @@ const LoginScreen = ({ location }) => {
           >
             Sign-In
           </Button>
-          <GoogleAuth />
+          <GoogleAuth message="Sign In With Google" />
         </Form>
         <Container style={{ paddingTop: "5%" }}>
           <Link

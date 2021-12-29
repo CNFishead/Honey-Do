@@ -238,6 +238,7 @@ export const googleAuth = asyncHandler(async (req, res, next) => {
   });
 
   const payload = ticket.getPayload();
+  console.log(payload);
 
   let user = await User.findOne({ email: payload?.email });
   // TODO: Fix user signup on find user fail
@@ -245,7 +246,8 @@ export const googleAuth = asyncHandler(async (req, res, next) => {
     user = await new User({
       email: payload?.email,
       avatar: payload?.picture,
-      name: payload?.name,
+      firstName: payload?.given_name,
+      lastName: payload?.family_name,
     });
 
     await user.save();

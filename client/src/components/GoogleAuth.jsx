@@ -1,13 +1,8 @@
 // /components/GoogleAuth.tsx
 import axios from "axios";
-import { useState } from "react";
-import { Button } from "react-bootstrap";
 import { GoogleLogin } from "react-google-login";
-import { useSelector } from "react-redux";
 
-const GoogleAuth = () => {
-  // App state
-  const { userInfo } = useSelector((state) => state.userLogin);
+const GoogleAuth = ({ message }) => {
 
   const onSuccess = async (response) => {
     try {
@@ -27,17 +22,13 @@ const GoogleAuth = () => {
     <GoogleLogin
       clientId="147960290260-ed8f467485mtet57gk1mnjplgkpccbgt.apps.googleusercontent.com"
       render={(renderProps) => (
-        <Button
+        <button
           onClick={renderProps.onClick}
           disabled={renderProps.disabled}
-          variant="danger"
-          style={{
-            width: "100%",
-            margin: "2% 0",
-          }}
+          className="googleButton"
         >
-          <i class="fab fa-google" /> Sign In with Google
-        </Button>
+          <i class="fab fa-google" style={{ color: "white" }} /> {message}
+        </button>
       )}
       buttonText="Login"
       onSuccess={onSuccess}
