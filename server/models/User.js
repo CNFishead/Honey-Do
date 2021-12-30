@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import bcyrpt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
+import findOrCreatePlugin from "mongoose-findorcreate";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -10,6 +11,9 @@ const UserSchema = new mongoose.Schema(
       required: [true, "Please add a name"],
     },
     lastName: {
+      type: String,
+    },
+    avatar: {
       type: String,
     },
     sex: {
@@ -85,4 +89,6 @@ UserSchema.methods.getResetPasswordToken = async function () {
   this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
   return resetToken;
 };
+
+UserSchema.plugin(findOrCreatePlugin);
 export default mongoose.model("User", UserSchema);

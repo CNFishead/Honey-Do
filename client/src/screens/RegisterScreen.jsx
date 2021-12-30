@@ -11,6 +11,7 @@ import FormContainer from "../components/FormContainer";
 // Actions
 import { register } from "../actions/userActions";
 import Meta from "../components/Meta";
+import GoogleAuth from "../components/GoogleAuth";
 
 const RegisterScreen = () => {
   const navigate = useNavigate();
@@ -214,6 +215,8 @@ const RegisterScreen = () => {
               >
                 Register
               </Button>
+
+              <GoogleAuth message="Sign Up With Google" />
             </Form>
 
             <Row className="py-3" style={{ fontSize: "1.5em" }}>

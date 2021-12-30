@@ -7,6 +7,7 @@ import Loader from "../components/Loader";
 import { login } from "../actions/userActions";
 import FormContainer from "../components/FormContainer";
 import Meta from "../components/Meta";
+import GoogleAuth from "../components/GoogleAuth";
 
 const LoginScreen = ({ location }) => {
   const navigate = useNavigate();
@@ -78,6 +79,7 @@ const LoginScreen = ({ location }) => {
           >
             Sign-In
           </Button>
+          <GoogleAuth message="Sign In With Google" />
         </Form>
         <Container style={{ paddingTop: "5%" }}>
           <Link

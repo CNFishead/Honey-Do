@@ -1,5 +1,7 @@
 import React, { Fragment } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Container } from "react-bootstrap";
+import ReactGA from "react-ga";
 
 // Screen imports
 import Home from "./screens/Home";
@@ -16,16 +18,25 @@ import Support from "./screens/Support";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import PrivateRoute from "./components/PrivateRoute";
+import RouteChangetracker from "./components/RouteChangetracker";
 
 // css styles
 import "./App.css";
-import { Container, Row } from "react-bootstrap";
 
 const App = () => {
+  // Google analytic stuff
+  ReactGA.initialize("G-2M2LPNFQ1W", {
+    titleCase: false,
+    gaOptions: {
+      userId: 123,
+    },
+  });
+
   return (
     <>
       {/* RouteChangetracker tracks the pages as the customer moves about the page. */}
       <Router>
+        <RouteChangetracker />
         <Container
           fluid
           style={{ height: "100%", widht: "100vw", position: "absolute" }}

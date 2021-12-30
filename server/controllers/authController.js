@@ -4,6 +4,12 @@ import User from "../models/User.js";
 import sendEmail from "../utils/sendEmail.js";
 import generateToken from "../utils/generateToken.js";
 import crypto from "crypto";
+import { OAuth2Client } from "google-auth-library";
+import passport from "passport";
+
+import dotenv from "dotenv";
+
+dotenv.config();
 
 /*
   @desc:  Register User
@@ -219,6 +225,43 @@ const sendTokenResponse = (user, statusCode, res) => {
     .cookie("token", token, options)
     .json({ success: true, token });
 };
+
+export const googleAuth = asyncHandler(async (req, res, next) => {
+  const googleClient = new OAuth2Client({
+    clientId: `${process.env.GOOGLE_CLIENT_ID}`,
+  });
+  const { token } = req.body;
+
+  const ticket = await googleClient.verifyIdToken({
+    idToken: token,
+    audient: `${process.env.GOOGLE_CLIENT_ID}`,
+  });
+
+  const payload = ticket.getPayload();
+  console.log(payload);
+
+  let user = await User.findOne({ email: payload?.email });
+  // TODO: Fix user signup on find user fail
+  if (!user) {
+    user = await new User({
+      email: payload?.email,
+      avatar: payload?.picture,
+      firstName: payload?.given_name,
+      lastName: payload?.family_name,
+    });
+
+    await user.save();
+  }
+
+  res.status(200).json({
+    _id: user._id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    isAdmin: user.isAdmin,
+    token: generateToken(user._id),
+  });
+});
 
 export {
   register,
