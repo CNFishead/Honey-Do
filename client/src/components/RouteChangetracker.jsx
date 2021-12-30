@@ -5,10 +5,12 @@ import ReactGA from "react-ga";
 const RouteChangetracker = () => {
   // const navigate = useNavigate();
   const location = useLocation();
-  location.listen(() => {
+
+  React.useEffect(() => {
     ReactGA.set({ page: location.pathname });
     ReactGA.pageview(location.pathname);
-  });
+    console.log({ location });
+  }, [location]);
 
   return <div></div>;
 };

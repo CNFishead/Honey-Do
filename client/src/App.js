@@ -18,15 +18,14 @@ import Support from "./screens/Support";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import PrivateRoute from "./components/PrivateRoute";
-// import RouteChangetracker from "./components/RouteChangetracker";
+import RouteChangetracker from "./components/RouteChangetracker";
 
 // css styles
 import "./App.css";
 
 const App = () => {
   // Google analytic stuff
-  ReactGA.initialize("", {
-    debug: true,
+  ReactGA.initialize("G-2M2LPNFQ1W", {
     titleCase: false,
     gaOptions: {
       userId: 123,
@@ -37,7 +36,7 @@ const App = () => {
     <>
       {/* RouteChangetracker tracks the pages as the customer moves about the page. */}
       <Router>
-        {/* <RouteChangetracker /> */}
+        <RouteChangetracker />
         <Container
           fluid
           style={{ height: "100%", widht: "100vw", position: "absolute" }}
