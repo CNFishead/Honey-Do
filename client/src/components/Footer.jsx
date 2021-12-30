@@ -1,6 +1,7 @@
 import React from "react";
 import { Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import privacyPolicy from "../assets/Privacy-Policy.docx";
 
 const Footer = () => {
   let dateObj = new Date();
@@ -23,6 +24,12 @@ const Footer = () => {
           <p>
             If you are experiencing any issues with the app please{" "}
             <Link to="/support">Contact Us</Link>
+          </p>
+          <p>
+            View our{" "}
+            <a href={privacyPolicy} download>
+              Privacy Policy
+            </a>
           </p>
         </Row>
       </Container>
