@@ -60,7 +60,8 @@ const TodoList = () => {
   };
 
   const deleteItem = (id) => {
-    const element = list.todoItems.indexOf(id);
+    const element = list.todoItems.indexOf(list.todoItems[id]);
+    console.log(element);
     list.todoItems.splice(element, 1);
     dispatch(updateTodo(list));
   };

@@ -15,7 +15,7 @@ dotenv.config();
   @route: POST /api/auth/register
   @access Public
 */
-const register = asyncHandler(async (req, res, next) => {
+export const register = asyncHandler(async (req, res, next) => {
   // Check if user exists in the database
   const userExists = await User.findOne({ email: req.body.email });
   if (userExists) {
@@ -56,7 +56,7 @@ const register = asyncHandler(async (req, res, next) => {
   @route: POST /api/auth/register
   @access Public
 */
-const login = asyncHandler(async (req, res, next) => {
+export const login = asyncHandler(async (req, res, next) => {
   // Destructure body data
   const { email, password } = req.body;
 
@@ -92,7 +92,7 @@ const login = asyncHandler(async (req, res, next) => {
    @route   POST /api/auth/forgotpassword
    @access  Public
  */
-const forgotPassword = asyncHandler(async (req, res, next) => {
+export const forgotPassword = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
     return res.status(404).json({
@@ -132,7 +132,7 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
    @route   PUT /api/auth/resetpassword/:resettoken
    @access  Public
  */
-const resetPassword = asyncHandler(async (req, res, next) => {
+export const resetPassword = asyncHandler(async (req, res, next) => {
   // Get hashed token
   const resetPassToken = crypto
     .createHash("sha256")
@@ -210,14 +210,3 @@ export const googleAuth = asyncHandler(async (req, res, next) => {
     token: generateToken(user._id),
   });
 });
-
-export {
-  register,
-  login,
-  getMe,
-  forgotPassword,
-  resetPassword,
-  updateDetails,
-  updatePassword,
-  sendTokenResponse,
-};
