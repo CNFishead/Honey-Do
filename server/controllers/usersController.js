@@ -6,7 +6,7 @@ import Todo from "../models/Todo.js";
 
 /* 
   @desc      Get all users
-  @route     GET /api/v1/users
+  @route     GET /api/users
   @access    Private/Admin
 */
 export const getUsers = asyncHandler(async (req, res, next) => {
@@ -37,13 +37,12 @@ export const getUser = asyncHandler(async (req, res, next) => {
       isAdmin: user.isAdmin,
     });
   } else {
-    res.status(404);
-    throw new Error("User Not Found");
+    res.status(404).json({ success: false, message: "User Not Found" });
   }
 });
 
-//@desc get User profile.
-//@route Get /api/users/profile
+//@desc   Get User profile.
+//@route  Get /api/users/profile
 //@access Private
 export const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
@@ -53,18 +52,15 @@ export const getUserProfile = asyncHandler(async (req, res) => {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-      isActive: user.isActive,
       sex: user.gender,
-      isAdmin: user.isAdmin,
     });
   } else {
-    res.status(404);
-    throw new Error("User Not Found");
+    res.status(404).json({ success: false, message: "User Not Found" });
   }
 });
 
-//@desc Update User profile.
-//@route PUT /api/users/profile
+//@desc   Update User profile.
+//@route  PUT /api/users/profile
 //@access Private
 export const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
@@ -83,13 +79,10 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
       firstName: updatedUser.firstName,
       lastName: updatedUser.lastName,
       email: updatedUser.email,
-      isAdmin: updatedUser.isAdmin,
-      isActive: updatedUser.isActive,
       token: generateToken(user._id),
     });
   } else {
-    res.status(404);
-    throw new Error("User Not Found");
+    res.status(404).json({ success: false, message: "User Not Found" });
   }
 });
 
@@ -131,8 +124,8 @@ export const removeAccount = asyncHandler(async (req, res) => {
   res.status(204).json({ success: true });
 });
 
-//@desc Delete user
-//@route DELETE /api/users/:id
+//@desc   Delete user
+//@route  DELETE /api/users/:id
 //@access Private/Admin
 export const deleteUser = asyncHandler(async (req, res) => {
   //Find user
@@ -144,13 +137,12 @@ export const deleteUser = asyncHandler(async (req, res) => {
     await user.remove();
     res.json({ message: "User removed" });
   } else {
-    res.status(404);
-    throw new Error("User not Found");
+    res.status(404).json({ success: false, message: "User Not Found" });
   }
 });
 
-//@desc get user by ID.
-//@route Get /api/users/:id
+//@desc   get user by ID.
+//@route  Get /api/users/:id
 //@access Private/Admin
 export const getUserById = asyncHandler(async (req, res) => {
   //Finds ALL users
@@ -158,13 +150,12 @@ export const getUserById = asyncHandler(async (req, res) => {
   if (user) {
     res.json(user);
   } else {
-    res.status(404);
-    throw new Error("User not Found");
+    res.status(404).json({ success: false, message: "User Not Found" });
   }
 });
 
-//@desc Update User
-//@route PUT /api/users/:id
+//@desc   Update User
+//@route  PUT /api/users/:id
 //@access Private/Admin
 export const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
@@ -186,7 +177,6 @@ export const updateUser = asyncHandler(async (req, res) => {
       isAdmin: updatedUser.isAdmin,
     });
   } else {
-    res.status(404);
-    throw new Error("User Not Found");
+    res.status(404).json({ success: false, message: "User Not Found" });
   }
 });

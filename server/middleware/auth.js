@@ -19,20 +19,25 @@ export const protect = asyncHandler(async (req, res, next) => {
 
   // Make sure token exists
   if (!token) {
-    return next(new ErrorResponse(`Not authorized to access this route`, 401));
+    return res
+      .status(400)
+      .json({ success: false, message: `Not authorized to access this route` });
   }
   try {
     // verify Token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     // dev purposes
-    console.log(decoded);
+    // console.log(decoded);
     // Find User
     req.user = await User.findById(decoded.id);
     next();
   } catch (e) {
-    return next(
-      new ErrorResponse(`Not authorized to access this route: ${e}`, 401)
-    );
+    return res
+      .status(400)
+      .json({
+        success: false,
+        message: `Not authorized to access this route: ${e}`,
+      });
   }
 });
 
@@ -41,7 +46,6 @@ export const authorize = (req, res, next) => {
   if (req.user && req.user.isAdmin) {
     next();
   } else {
-    res.status(401);
-    throw new Error("Not authorized Admin");
+    res.status(401.).json({success: false, message: "Not authorized Admin"});
   }
 };
