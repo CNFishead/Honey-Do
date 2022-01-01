@@ -36,7 +36,6 @@ export const addListItem = asyncHandler(async (req, res, next) => {
     { _id: req.params.id, user: req.user._id },
     req.body,
     {
-      new: true,
       runValidators: true,
     }
   );

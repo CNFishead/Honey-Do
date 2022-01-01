@@ -266,44 +266,6 @@ export const activate = (id) => async (dispatch, getState) => {
     });
   }
 };
-// allows the admin to flip an account back to active
-export const active = (id) => async (dispatch, getState) => {
-  try {
-    dispatch({
-      type: USER_UPDATE_REQUEST,
-    });
-
-    const {
-      userLogin: { userInfo },
-    } = getState();
-
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-
-    const { data } = await axios.put(`/api/users/${id}/active`, config);
-
-    dispatch({
-      type: USER_UPDATE_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
-    if (message === "Not authorized, token failed") {
-      dispatch(logout());
-    }
-    dispatch({
-      type: USER_UPDATE_FAIL,
-      payload: message,
-    });
-  }
-};
 
 export const listUsers =
   (keyword, pageNumber = 1) =>

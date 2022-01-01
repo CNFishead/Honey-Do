@@ -5,7 +5,6 @@ import sendEmail from "../utils/sendEmail.js";
 import generateToken from "../utils/generateToken.js";
 import crypto from "crypto";
 import { OAuth2Client } from "google-auth-library";
-import passport from "passport";
 
 import dotenv from "dotenv";
 
@@ -16,7 +15,7 @@ dotenv.config();
   @route: POST /api/auth/register
   @access Public
 */
-const register = asyncHandler(async (req, res, next) => {
+export const register = asyncHandler(async (req, res, next) => {
   // Check if user exists in the database
   const userExists = await User.findOne({ email: req.body.email });
   if (userExists) {
@@ -57,7 +56,7 @@ const register = asyncHandler(async (req, res, next) => {
   @route: POST /api/auth/register
   @access Public
 */
-const login = asyncHandler(async (req, res, next) => {
+export const login = asyncHandler(async (req, res, next) => {
   // Destructure body data
   const { email, password } = req.body;
 
@@ -89,62 +88,11 @@ const login = asyncHandler(async (req, res, next) => {
   }
 });
 
-/* @desc   Get current logged in user
-   @route  POST /api/auth/me
-   @access Private
- */
-const getMe = asyncHandler(async (req, res, nex) => {
-  const user = await User.findById(req.user.id);
-  res.status(200).json({
-    success: true,
-    data: user,
-  });
-});
-
-/* @desc   Update password
-   @route  POST /api/auth/updatepassword
-   @access Private
- */
-const updatePassword = asyncHandler(async (req, res, nex) => {
-  // find user, and add password to returned object
-  const user = await User.findById(req.user.id).select("+password");
-
-  // Check current password
-  if (!(await user.matchPassword(req.body.currentPassword))) {
-    return nex(new ErrorResponse("Password is incorrect", 401));
-  }
-  // set password, password will hash itself before saving
-  user.password = req.body.newPassword;
-  await user.save();
-
-  sendTokenResponse(user, 200, res);
-});
-
-/* @desc   Update user details
-   @route  PUT /api/auth/updatedetails
-   @access Private
- */
-const updateDetails = asyncHandler(async (req, res, nex) => {
-  const fieldsToUpdate = {
-    name: req.body.name,
-    email: req.body.email,
-  };
-
-  const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
-    new: true,
-    runValidators: true,
-  });
-  res.status(200).json({
-    success: true,
-    data: user,
-  });
-});
-
 /* @desc    Forgot password
    @route   POST /api/auth/forgotpassword
    @access  Public
  */
-const forgotPassword = asyncHandler(async (req, res, next) => {
+export const forgotPassword = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
     return res.status(404).json({
@@ -184,7 +132,7 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
    @route   PUT /api/auth/resetpassword/:resettoken
    @access  Public
  */
-const resetPassword = asyncHandler(async (req, res, next) => {
+export const resetPassword = asyncHandler(async (req, res, next) => {
   // Get hashed token
   const resetPassToken = crypto
     .createHash("sha256")
@@ -262,14 +210,3 @@ export const googleAuth = asyncHandler(async (req, res, next) => {
     token: generateToken(user._id),
   });
 });
-
-export {
-  register,
-  login,
-  getMe,
-  forgotPassword,
-  resetPassword,
-  updateDetails,
-  updatePassword,
-  sendTokenResponse,
-};
