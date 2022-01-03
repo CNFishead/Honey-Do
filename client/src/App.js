@@ -13,6 +13,7 @@ import UserEditScreen from "./screens/UserEditScreen";
 import UserListScreen from "./screens/UserListScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import Support from "./screens/Support";
+import NotFound from "./screens/NotFound";
 
 // Components
 import Header from "./components/Header";
@@ -25,7 +26,7 @@ import "./App.css";
 
 const App = () => {
   // Google analytic stuff
-  ReactGA.initialize("G-HM8EEJ6ZMF", {
+  ReactGA.initialize("G-G66N6CNLFY", {
     titleCase: false,
     gaOptions: {
       userId: 123,
@@ -79,6 +80,8 @@ const App = () => {
               exact
             />
             <Route path="/" element={<Home />} exact />
+            {/* Catch all for routes not found */}
+            <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />
         </Container>
