@@ -25,7 +25,7 @@ import "./App.css";
 
 const App = () => {
   // Google analytic stuff
-  ReactGA.initialize("G-2M2LPNFQ1W", {
+  ReactGA.initialize("G-HM8EEJ6ZMF", {
     titleCase: false,
     gaOptions: {
       userId: 123,

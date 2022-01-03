@@ -16,6 +16,7 @@ import {
 } from "../constants/todoConstants";
 import { logout } from "./userActions";
 import axios from "axios";
+import ReactGa from "react-ga";
 
 // Set Current List
 export const setCurrent = (list) => async (dispatch, getState) => {
@@ -51,35 +52,6 @@ export const listTodos = () => async (dispatch, getState) => {
     });
   }
 };
-
-// export const listTodoDetails = (id) => async (dispatch, getState) => {
-//   try {
-//     dispatch({ type: TODO_DETAILS_REQUEST });
-//     const {
-//       userLogin: { userInfo },
-//     } = getState();
-//     const config = {
-//       headers: {
-//         Authorization: `Bearer ${userInfo.token}`,
-//       },
-//     };
-
-//     const { data } = await axios.get(`/api/todo/${id}`, config);
-
-//     dispatch({
-//       type: TODO_DETAILS_SUCCESS,
-//       payload: data.data,
-//     });
-//   } catch (error) {
-//     dispatch({
-//       type: TODO_DETAILS_FAIL,
-//       payload:
-//         error.response && error.response.data.message
-//           ? error.response.data.message
-//           : error.message,
-//     });
-//   }
-// };
 
 export const deleteTodo = (id) => async (dispatch, getState) => {
   try {
@@ -152,6 +124,7 @@ export const createTodo =
         type: SET_CURRENT,
         payload: data.list,
       });
+      ReactGa.event({ category: "List", action: "List was Created" });
     } catch (error) {
       const message =
         error.response && error.response.data.message
