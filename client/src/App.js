@@ -13,6 +13,7 @@ import UserEditScreen from "./screens/UserEditScreen";
 import UserListScreen from "./screens/UserListScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import Support from "./screens/Support";
+import NotFound from "./screens/NotFound";
 
 // Components
 import Header from "./components/Header";
@@ -79,6 +80,8 @@ const App = () => {
               exact
             />
             <Route path="/" element={<Home />} exact />
+            {/* Catch all for routes not found */}
+            <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />
         </Container>
