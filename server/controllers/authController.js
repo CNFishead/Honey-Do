@@ -188,14 +188,14 @@ export const googleAuth = asyncHandler(async (req, res, next) => {
   const payload = ticket.getPayload();
   console.log(payload);
 
-  let user = await User.findOne({ email: payload?.email });
+  let user = await User.findOne({ email: payload.email });
   // TODO: Fix user signup on find user fail
   if (!user) {
     user = await new User({
-      email: payload?.email,
-      avatar: payload?.picture,
-      firstName: payload?.given_name,
-      lastName: payload?.family_name,
+      email: payload.email,
+      avatar: payload.picture,
+      firstName: payload.given_name,
+      lastName: payload.family_name,
     });
 
     await user.save();
@@ -205,7 +205,6 @@ export const googleAuth = asyncHandler(async (req, res, next) => {
     _id: user._id,
     firstName: user.firstName,
     lastName: user.lastName,
-    email: user.email,
     isAdmin: user.isAdmin,
     token: generateToken(user._id),
   });
