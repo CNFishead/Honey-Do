@@ -18,7 +18,7 @@ router.route("/").get(protect, authorize, getUsers);
 
 router
   .route("/:id")
-  .get(protect, authorize, getUser)
+  .get(protect, getUser)
   .put(protect, authorize, updateUser)
   .delete(protect, authorize, deleteUser);
 router.route("/:id/delete").put(removeAccount);
