@@ -19,6 +19,7 @@ import {
   todoSetReducer,
   todoUpdateReducer,
 } from "./reducers/todoReducer";
+import { alert } from "./reducers/alertReducer";
 
 const middleware = [thunk];
 
@@ -37,6 +38,8 @@ const reducer = combineReducers({
   todoSet: todoSetReducer,
   todoDelete: todoDeleteReducer,
   todoUpdate: todoUpdateReducer,
+  // Alert reducer
+  alert: alert,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

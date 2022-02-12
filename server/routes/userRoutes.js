@@ -1,14 +1,12 @@
 import express from "express";
-import {
-  getUsers,
-  getUser,
-  updateUser,
-  deleteUser,
-  getUserProfile,
-  updateUserProfile,
-  removeAccount,
-  activateAccount,
-} from "../controllers/usersController.js";
+import { getUsers } from "../controllers/Admin/getUsers.js";
+import { getUser } from "../controllers/Admin/getUser.js";
+import { updateUser } from "../controllers/Admin/updateUser.js";
+import { deleteUser } from "../controllers/Admin/deleteUser.js";
+import { activateAccount } from "../controllers/Admin/activateAccount.js";
+import { getUserProfile } from "../controllers/User/getUserProfile.js";
+import { updateUserProfile } from "../controllers/User/updateUserProfile.js";
+import { removeAccount } from "../controllers/User/removeAccount.js";
 import { protect, authorize } from "../middleware/auth.js";
 const router = express.Router({ mergeParams: true });
 

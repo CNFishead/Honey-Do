@@ -15,6 +15,7 @@ import {
 } from "../actions/userActions";
 import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants";
 import Meta from "../components/Meta";
+import { setAlert } from "../actions/alert";
 
 const ProfileScreen = () => {
   // hooks
@@ -25,7 +26,6 @@ const ProfileScreen = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [gender, setGender] = useState("");
-  const [message, setMessage] = useState(null);
   const [validLength, hasNumber, upperCase, lowerCase, match, specialChar] =
     usePasswordValidation({
       password1: password,
@@ -33,7 +33,7 @@ const ProfileScreen = () => {
     });
   const dispatch = useDispatch();
 
-  const { loading, error, user } = useSelector((state) => state.userDetails);
+  const { loading, user } = useSelector((state) => state.userDetails);
 
   const { userInfo } = useSelector((state) => state.userLogin);
 
@@ -49,9 +49,7 @@ const ProfileScreen = () => {
         //Here the route will connect to /api/users/profile instead of
         // /api/users/{id}
         dispatch({ type: USER_UPDATE_PROFILE_RESET });
-        dispatch(getUserDetails("profile"));
-        // Dispatch list your orders
-        // dispatch(listMyOrders());
+        dispatch(getUserDetails(userInfo._id));
       } else {
         //Else Fill forms
         setFirstName(user.firstName);
@@ -65,7 +63,7 @@ const ProfileScreen = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      setMessage("Passwords do not match");
+      dispatch(setAlert("Passwords do not match", "danger"));
     } else {
       dispatch(
         updateUserProfile({
@@ -92,8 +90,6 @@ const ProfileScreen = () => {
   return (
     <Row>
       <Meta title={`Honey Do | Profile`} />
-      {message && <Message variant="danger">{message}</Message>}
-      {error && <Message variant="danger">{error}</Message>}
       {success && <Message variant="success">Profile Updated</Message>}
       {loading && <Loader />}
       <FormContainer>

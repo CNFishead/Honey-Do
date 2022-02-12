@@ -9,7 +9,6 @@ import {
   InputGroup,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import Message from "../components/Message";
 import Loader from "../components/Loader";
 import {
   activate,
@@ -28,7 +27,7 @@ const UserListScreen = () => {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
 
-  const { loading, error, users, pages, page } = useSelector(
+  const { loading, users, pages, page } = useSelector(
     (state) => state.userList
   );
   const { userInfo, loading: userLoading } = useSelector(
@@ -103,9 +102,7 @@ const UserListScreen = () => {
 
         {loading ? (
           <Loader />
-        ) : error ? (
-          <Message variant="danger">{error}</Message>
-        ) : (
+        ) :  (
           <Table
             striped
             bordered

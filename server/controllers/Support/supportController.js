@@ -1,5 +1,5 @@
-import asyncHandler from "../middleware/async.js";
-import sendEmail from "../utils/sendEmail.js";
+import asyncHandler from "../../middleware/async.js";
+import sendEmail from "../../utils/sendEmail.js";
 
 /*
   @Desc:   Allows a user to send a support email

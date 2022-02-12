@@ -23,6 +23,9 @@ import RouteChangetracker from "./components/RouteChangetracker";
 
 // css styles
 import "./App.css";
+import Alert from "./components/Alert";
+import setAuthToken from "./utils/setAuthToken";
+import { useSelector } from "react-redux";
 
 const App = () => {
   // Google analytic stuff
@@ -32,12 +35,19 @@ const App = () => {
       userId: 123,
     },
   });
-
+  // This sets the common headers for axios
+  // if there is a user object, that object has a token
+  // set the common header to that token
+  const { userInfo } = useSelector((state) => state.userLogin);
+  if (userInfo) {
+    setAuthToken(userInfo.token);
+  }
   return (
     <>
       {/* RouteChangetracker tracks the pages as the customer moves about the page. */}
       <Router>
         <RouteChangetracker />
+        <Alert />
         <Container
           fluid
           style={{ height: "100%", widht: "100vw", position: "absolute" }}

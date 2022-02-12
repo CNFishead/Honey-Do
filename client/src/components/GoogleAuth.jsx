@@ -3,7 +3,6 @@ import axios from "axios";
 import { GoogleLogin } from "react-google-login";
 
 const GoogleAuth = ({ message }) => {
-
   const onSuccess = async (response) => {
     try {
       const { data } = await axios.post("/api/auth/google", {
@@ -27,7 +26,7 @@ const GoogleAuth = ({ message }) => {
           disabled={renderProps.disabled}
           className="googleButton"
         >
-          <i class="fab fa-google" style={{ color: "white" }} /> {message}
+          <i className="fab fa-google" style={{ color: "white" }} /> {message}
         </button>
       )}
       buttonText="Login"
