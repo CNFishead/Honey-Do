@@ -1,43 +1,27 @@
 import React, { useState } from "react";
 import { Form, Button, FloatingLabel, Container } from "react-bootstrap";
-import axios from "axios";
 
 // Components
-import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
 import Meta from "../components/Meta";
 
+import { useDispatch } from "react-redux";
+import { forgotPassword } from "../actions/Auth/forgotPassword";
+
 const Reset = () => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [message, setMessage] = useState("");
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    try {
-      setLoading(!loading);
-      const data = await axios({
-        method: "POST",
-        url: "/api/auth/forgotpassword",
-        data: { email },
-      });
-      console.log(data);
-      if (data.data.success) {
-        setLoading(false);
-      }
-    } catch (e) {
-      console.log(e);
-      setError(!error);
-      setMessage(e.message);
-    }
+    dispatch(forgotPassword(email));
   };
   return (
     <Container>
       <Meta title={`Honey Do | Password Reset`} />
       <FormContainer>
-        {error && <Message variant="danger">{message}</Message>}
         <h1>Reset Account Password</h1>
         <Form onSubmit={submitHandler}>
           <Form.Group controlId="email">

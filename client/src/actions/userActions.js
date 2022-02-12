@@ -25,6 +25,7 @@ import {
   USER_UPDATE_REQUEST,
   USER_UPDATE_SUCCESS,
 } from "../constants/userConstants";
+import { setAlert } from "./alert";
 
 export const login = (email, password) => async (dispatch) => {
   try {
@@ -51,13 +52,16 @@ export const login = (email, password) => async (dispatch) => {
 
     localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+
     dispatch({
       type: USER_LOGIN_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: message,
     });
+    dispatch(setAlert(message, "danger"));
   }
 };
 
@@ -68,6 +72,7 @@ export const logout = () => (dispatch) => {
   dispatch({ type: USER_LOGOUT });
   dispatch({ type: USER_DETAILS_RESET });
   dispatch({ type: USER_LIST_RESET });
+  dispatch(setAlert(`You've Successfully logged out`, "success"));
   document.location.href = "/";
 };
 
@@ -97,13 +102,15 @@ export const register = (user) => async (dispatch) => {
 
     localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
     dispatch({
       type: USER_REGISTER_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: message,
     });
+    dispatch(setAlert(message, "danger"));
   }
 };
 export const getUserDetails = (id) => async (dispatch, getState) => {
@@ -136,6 +143,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
     if (message === "Not authorized, token failed") {
       dispatch(logout());
     }
+    dispatch(setAlert(message, "danger"));
     dispatch({
       type: USER_DETAILS_FAIL,
       payload: message,
@@ -182,6 +190,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
     if (message === "Not authorized, token failed") {
       dispatch(logout());
     }
+    dispatch(setAlert(message, "danger"));
     dispatch({
       type: USER_UPDATE_PROFILE_FAIL,
       payload: message,
@@ -211,6 +220,7 @@ export const inactive = (id) => async (dispatch, getState) => {
       type: USER_UPDATE_SUCCESS,
       payload: data,
     });
+    dispatch(setAlert(`You have made this account inactive`, "success"));
     //Changes the localStorage information to update the name if information changes.
     localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
@@ -221,6 +231,7 @@ export const inactive = (id) => async (dispatch, getState) => {
     if (message === "Not authorized, token failed") {
       dispatch(logout());
     }
+    dispatch(setAlert(message, "danger"));
     dispatch({
       type: USER_UPDATE_FAIL,
       payload: message,
@@ -250,6 +261,7 @@ export const activate = (id) => async (dispatch, getState) => {
       type: USER_UPDATE_SUCCESS,
       payload: data,
     });
+    dispatch(setAlert(`You've Reactivated account: ${id}`, "success"));
     //Changes the localStorage information to update the name if information changes.
     localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
@@ -260,6 +272,7 @@ export const activate = (id) => async (dispatch, getState) => {
     if (message === "Not authorized, token failed") {
       dispatch(logout());
     }
+    dispatch(setAlert(message, "danger"));
     dispatch({
       type: USER_UPDATE_FAIL,
       payload: message,
@@ -301,6 +314,7 @@ export const listUsers =
       if (message === "Not authorized, token failed") {
         dispatch(logout());
       }
+      dispatch(setAlert(message, "danger"));
       dispatch({
         type: USER_LIST_FAIL,
         payload: message,
@@ -325,7 +339,7 @@ export const deleteUser = (id) => async (dispatch, getState) => {
     };
 
     await axios.delete(`/api/users/${id}`, config);
-
+    dispatch(setAlert(`User ${id} Successfully deleted`, "success"));
     dispatch({ type: USER_DELETE_SUCCESS });
   } catch (error) {
     const message =
@@ -335,6 +349,7 @@ export const deleteUser = (id) => async (dispatch, getState) => {
     if (message === "Not authorized, token failed") {
       dispatch(logout());
     }
+    dispatch(setAlert(message, "danger"));
     dispatch({
       type: USER_DELETE_FAIL,
       payload: message,
@@ -366,6 +381,7 @@ export const updateUser = (user) => async (dispatch, getState) => {
     dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
 
     dispatch({ type: USER_DETAILS_RESET });
+    dispatch(setAlert(`Profile Updated`, "success"));
   } catch (error) {
     const message =
       error.response && error.response.data.message
@@ -374,6 +390,7 @@ export const updateUser = (user) => async (dispatch, getState) => {
     if (message === "Not authorized, token failed") {
       dispatch(logout());
     }
+    dispatch(setAlert(message, "danger"));
     dispatch({
       type: USER_UPDATE_FAIL,
       payload: message,

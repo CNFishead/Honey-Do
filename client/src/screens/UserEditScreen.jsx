@@ -6,17 +6,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { usePasswordValidation } from "../hooks/usePasswordValidation";
 
 // components
-import Message from "../components/Message";
+
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
 
 // Actions/Constants
 import { getUserDetails, updateUser } from "../actions/userActions";
-import {
-  USER_UPDATE_FAIL,
-  USER_UPDATE_RESET,
-} from "../constants/userConstants";
+import { USER_UPDATE_RESET } from "../constants/userConstants";
 import Meta from "../components/Meta";
+import { setAlert } from "../actions/alert";
 
 const UserEditScreen = () => {
   // params/navigate;
@@ -38,12 +36,10 @@ const UserEditScreen = () => {
     });
 
   // App state
-  const { loading, error, user } = useSelector((state) => state.userDetails);
-  const {
-    loading: loadingUpdate,
-    error: errorUpdate,
-    success: successUpdate,
-  } = useSelector((state) => state.userUpdate);
+  const { loading, user } = useSelector((state) => state.userDetails);
+  const { loading: loadingUpdate, success: successUpdate } = useSelector(
+    (state) => state.userUpdate
+  );
   const { userInfo } = useSelector((state) => state.userLogin);
 
   useEffect(() => {
@@ -52,6 +48,7 @@ const UserEditScreen = () => {
     }
     if (successUpdate) {
       dispatch({ type: USER_UPDATE_RESET });
+      dispatch(setAlert(`User has been updated`, "success"));
       navigate("/admin/userlist");
     } else {
       if (user._id !== id || !user.firstName) {
@@ -76,15 +73,14 @@ const UserEditScreen = () => {
         lowerCase &&
         specialChar
       ) {
-        dispatch(updateUser({ _id: id, firstName, lastName, email, password }));
+        dispatch(
+          updateUser({ _id: id, firstName, lastName, email, password, isAdmin })
+        );
       } else {
-        dispatch({
-          type: USER_UPDATE_FAIL,
-          payload: "Password Validation Failed",
-        });
+        dispatch(setAlert("Password Validation Failed", "danger"));
       }
     } else {
-      dispatch(updateUser({ _id: id, firstName, lastName, email }));
+      dispatch(updateUser({ _id: id, firstName, lastName, email, isAdmin }));
     }
   };
 
@@ -102,11 +98,8 @@ const UserEditScreen = () => {
 
         <h1>Edit User Info</h1>
         {loadingUpdate && <Loader />}
-        {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
         {loading ? (
           <Loader />
-        ) : error ? (
-          <Message variant="danger">{error}</Message>
         ) : (
           <Form onSubmit={submitHandler} style={{ fontFamily: "serif" }}>
             <Form.Group controlId="firstName">
@@ -147,7 +140,6 @@ const UserEditScreen = () => {
                 placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
               ></Form.Control>
               {password ? (
                 <Form.Text
@@ -204,7 +196,6 @@ const UserEditScreen = () => {
                 placeholder="Confirm password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                required
               ></Form.Control>
               {password !== "" ? (
                 match ? (

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { setAlert } from "../actions/alert";
 import { createTodo, deleteTodo, updateTodo } from "../actions/todoActions";
 
 // Image import
@@ -43,7 +44,7 @@ const TodoList = () => {
         })
       );
     } else {
-      alert("You must give a name to your new list");
+      dispatch(setAlert("You must give a name to your new list", "danger"));
     }
   };
 

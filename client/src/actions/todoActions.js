@@ -17,6 +17,7 @@ import {
 import { logout } from "./userActions";
 import axios from "axios";
 import ReactGa from "react-ga";
+import { setAlert } from "./alert";
 
 // Set Current List
 export const setCurrent = (list) => async (dispatch, getState) => {
@@ -43,12 +44,14 @@ export const listTodos = () => async (dispatch, getState) => {
     // Dispatch request type
     dispatch({ type: GET_TODOS_SUCCESS, payload: data });
   } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch(setAlert(message, "danger"));
     dispatch({
       type: GET_TODOS_ERROR,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: message,
     });
   }
 };
@@ -83,6 +86,7 @@ export const deleteTodo = (id) => async (dispatch, getState) => {
     if (message === "Not authorized, token failed") {
       dispatch(logout());
     }
+    dispatch(setAlert(message, "danger"));
     dispatch({
       type: DELETE_TODO_ERROR,
       payload: message,
@@ -130,6 +134,7 @@ export const createTodo =
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message;
+      dispatch(setAlert(message, "danger"));
       if (message === "Not authorized, token failed") {
         dispatch(logout());
       }
@@ -168,6 +173,7 @@ export const updateTodo = (todo) => async (dispatch, getState) => {
       error.response && error.response.data.message
         ? error.response.data.message
         : error.message;
+    dispatch(setAlert(message, "danger"));
     if (message === "Not authorized, token failed") {
       dispatch(logout());
     }

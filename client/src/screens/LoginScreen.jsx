@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Button, FloatingLabel, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { login } from "../actions/userActions";
 import FormContainer from "../components/FormContainer";
@@ -17,7 +16,7 @@ const LoginScreen = ({ location }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // App state
-  const { loading, error, userInfo } = useSelector((state) => state.userLogin);
+  const { loading, userInfo } = useSelector((state) => state.userLogin);
 
   useEffect(() => {
     if (userInfo) {
@@ -35,7 +34,6 @@ const LoginScreen = ({ location }) => {
       <Meta title={`Honey Do | Login`} />
       <FormContainer>
         <h1>Login</h1>
-        {error && <Message variant="danger">{error}</Message>}
         {loading && <Loader />}
         <Form onSubmit={submitHandler} className="form form-container">
           <Form.Group controlId="email">

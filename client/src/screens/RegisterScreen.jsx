@@ -5,13 +5,13 @@ import { Form, Button, Row, Col, FloatingLabel } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { usePasswordValidation } from "../hooks/usePasswordValidation";
 // Components
-import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
 // Actions
 import { register } from "../actions/userActions";
 import Meta from "../components/Meta";
 import GoogleAuth from "../components/GoogleAuth";
+import { setAlert } from "../actions/alert";
 
 const RegisterScreen = () => {
   const navigate = useNavigate();
@@ -21,7 +21,6 @@ const RegisterScreen = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [gender, setGender] = useState("");
-  const [message, setMessage] = useState(null);
   const [validLength, hasNumber, upperCase, lowerCase, match, specialChar] =
     usePasswordValidation({
       password1: password,
@@ -30,7 +29,7 @@ const RegisterScreen = () => {
   const dispatch = useDispatch();
 
   const userRegister = useSelector((state) => state.userRegister);
-  const { loading, error, userInfo } = userRegister;
+  const { loading, userInfo } = userRegister;
 
   // const redirect = location.search ? location.search.split("=")[1] : "/";
 
@@ -50,7 +49,7 @@ const RegisterScreen = () => {
       !lowerCase &&
       !specialChar
     ) {
-      setMessage("Password Validation failed");
+      dispatch(setAlert("Password Validation failed", "danger"));
     } else {
       let user = { firstName, lastName, email, password, gender };
       dispatch(register(user));
@@ -62,8 +61,6 @@ const RegisterScreen = () => {
       <Meta title={`Honey Do | Register`} />
       <FormContainer>
         <h1>Sign Up</h1>
-        {message && <Message variant="danger">{message}</Message>}
-        {error && <Message variant="danger">{error}</Message>}
         {loading ? (
           <Loader />
         ) : (

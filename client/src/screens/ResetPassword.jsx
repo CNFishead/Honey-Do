@@ -6,11 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
 // Components
-import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
 import { USER_LOGIN_SUCCESS } from "../constants/userConstants";
 import Meta from "../components/Meta";
+
+import { setAlert } from "../actions/alert";
 
 const ResetPassword = () => {
   // get param token
@@ -22,8 +23,6 @@ const ResetPassword = () => {
   const [passConfirm, setPassConfirm] = useState("");
   // eslint-disable-next-line
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [message, setMessage] = useState("");
 
   // Pull items from state
   const userLogin = useSelector((state) => state.userLogin);
@@ -50,19 +49,16 @@ const ResetPassword = () => {
           payload: data.data,
         });
       }
-      setError(!error);
-      setMessage(`Passwords have to match`);
+      dispatch(setAlert(`Passwords have to match`, "danger"));
     } catch (e) {
       console.log(e);
-      setError(!error);
-      setMessage(`Password Reset Failed... ${e.message}`);
+      dispatch(setAlert(`Password Reset Failed... ${e.message}`, "danger"));
     }
   };
   return (
     <Container>
       <Meta title={`Honey Do | New Password`} />
       <FormContainer>
-        {error && <Message variant="danger">{message}</Message>}
         <h1 style={{ color: "white" }}>Enter New Password</h1>
         <Form onSubmit={submitHandler}>
           <Form.Group controlId="password">
