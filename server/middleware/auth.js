@@ -21,7 +21,7 @@ export const protect = asyncHandler(async (req, res, next) => {
   if (!token) {
     return res
       .status(400)
-      .json({ success: false, message: `Not authorized to access this route` });
+      .json({ success: false, message: `Not authorized, token failed` });
   }
   try {
     // verify Token
@@ -32,12 +32,10 @@ export const protect = asyncHandler(async (req, res, next) => {
     req.user = await User.findById(decoded.id);
     next();
   } catch (e) {
-    return res
-      .status(400)
-      .json({
-        success: false,
-        message: `Not authorized to access this route: ${e}`,
-      });
+    return res.status(400).json({
+      success: false,
+      message: `Not authorized, token failed: ${e}`,
+    });
   }
 });
 
@@ -46,6 +44,6 @@ export const authorize = (req, res, next) => {
   if (req.user && req.user.isAdmin) {
     next();
   } else {
-    res.status(401.).json({success: false, message: "Not authorized Admin"});
+    res.status(401).json({ success: false, message: "Not authorized Admin" });
   }
 };
