@@ -220,6 +220,7 @@ export const inactive = (id) => async (dispatch, getState) => {
       type: USER_UPDATE_SUCCESS,
       payload: data,
     });
+    dispatch(logout());
     dispatch(setAlert(`You have made this account inactive`, "success"));
     //Changes the localStorage information to update the name if information changes.
     localStorage.setItem("userInfo", JSON.stringify(data));
